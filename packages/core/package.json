@@ -1,0 +1,20 @@
+{
+  "name": "@todo/core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc -watch",
+    "build": "tsc",
+    "test": "jest",
+    "clear": "rimref dist",
+    "check:types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@todo/typescript-config": "workspace:*",
+    "@todo/eslint-config": "workspace:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
