@@ -2,7 +2,30 @@
   "name": "@todo/core",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./use-cases": {
+      "types": "./dist/use-cases/*.d.ts",
+      "require": "./dist/use-cases/*.d.ts"
+    },
+    "./entities": {
+      "types": "./dist/entities/*.d.ts",
+      "require": "./dist/entities/*.d.ts"
+    },
+    "./interfaces": {
+      "types": "./dist/interfaces/*.d.ts",
+      "require": "./dist/interfaces/*.d.ts"
+    },
+    "./repositories": {
+      "types": "./dist/repositories/*.d.ts",
+      "require": "./dist/repositories/*.d.ts"
+    }
+  },
   "scripts": {
     "dev": "tsc -watch",
     "build": "tsc",
@@ -11,8 +34,9 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@todo/eslint-config": "workspace:*",
     "@todo/typescript-config": "workspace:*",
-    "@todo/eslint-config": "workspace:*"
+    "bcryptjs": "^3.0.2"
   },
   "keywords": [],
   "author": "",
