@@ -21,6 +21,10 @@
       "types": "./dist/hash-password/*.d.ts",
       "require": "./dist/hash-password/*.js"
     },
+    "./custom-error/*": {
+      "types": "./dist/custom-error/*.d.ts",
+      "require": "./dist/custom-error/*.js"
+    },
     "./json-web-token/*": {
       "types": "./dist/json-web-token/*.d.ts",
       "require": "./dist/json-web-token/*.js"
