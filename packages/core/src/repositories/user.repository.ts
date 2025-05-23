@@ -9,7 +9,7 @@ export type UserPagination = {
   limit: number;
 };
 
-export type UserID = string | number;
+export type UserID = string;
 
 export enum UserRoleEnum {
   SUPER_ADMIN = "SUPER_ADMIN",

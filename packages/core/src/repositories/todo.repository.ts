@@ -1,4 +1,5 @@
 import { Todo } from "@/entities/todo.entities";
+import { UserID } from "./user.repository";
 
 export type TodoFilter = {
   completed?: boolean;
@@ -9,7 +10,7 @@ export type TodoPagination = {
   limit: number;
 };
 
-export type TodoID = string | number;
+export type TodoID = string;
 
 export type CreateTodoDTO = {
   title: string;
@@ -25,9 +26,13 @@ export type UpdateTodoDTO = {
 };
 
 export interface TodoRepository {
-  findAll(filter?: TodoFilter, pagination?: TodoPagination): Promise<Todo[]>;
-  findById(id: TodoID): Promise<null | Todo>;
+  findAll(
+    userId: UserID,
+    filter?: TodoFilter,
+    pagination?: TodoPagination
+  ): Promise<Todo[]>;
+  findById(userId: UserID, id: TodoID): Promise<null | Todo>;
   create(data: CreateTodoDTO): Promise<Todo>;
-  update(id: TodoID, data: CreateTodoDTO): Promise<Todo>;
-  remove(id: TodoID): Promise<unknown>;
+  update(userId: UserID, id: TodoID, data: CreateTodoDTO): Promise<Todo>;
+  remove(userId: UserID, id: TodoID): Promise<unknown>;
 }
