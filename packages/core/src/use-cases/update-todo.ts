@@ -6,7 +6,7 @@ import {
   TodoRepository,
 } from "@/repositories/todo.repository";
 
-export class CreateTodoUseCase implements BaseUseCase<Todo> {
+export class UpdateTodoUseCase implements BaseUseCase<Todo> {
   constructor(private readonly todo: TodoRepository) {}
 
   async execute(id: TodoID, data: CreateTodoDTO): Promise<Todo> {

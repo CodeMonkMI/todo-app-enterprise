@@ -6,11 +6,11 @@ import { UserPagination } from "@/repositories/user.repository";
 export class ViewAllTodosUseCase implements BaseUseCase<Todo[]> {
   constructor(private readonly todo: TodoRepository) {}
 
-  async execute(data: {
+  async execute(data?: {
     filter?: TodoFilter;
     pagination?: UserPagination;
   }): Promise<Todo[]> {
-    const todos = await this.todo.findAll(data.filter, data.pagination);
+    const todos = await this.todo.findAll(data?.filter, data?.pagination);
     return todos;
   }
 }

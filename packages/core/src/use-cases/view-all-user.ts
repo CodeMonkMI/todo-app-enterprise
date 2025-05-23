@@ -9,11 +9,11 @@ import {
 export class ViewAllUsersUseCase implements BaseUseCase<User[]> {
   constructor(private readonly user: UserRepository) {}
 
-  async execute(data: {
+  async execute(data?: {
     filter?: UserFilter;
     pagination?: UserPagination;
   }): Promise<User[]> {
-    const user = await this.user.findAll(data.filter, data.pagination);
+    const user = await this.user.findAll(data?.filter, data?.pagination);
     if (!user) return [];
     return user;
   }

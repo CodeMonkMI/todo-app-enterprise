@@ -2,7 +2,30 @@
   "name": "@todo/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./console-logger/*": {
+      "types": "./dist/console-logger/*.d.ts",
+      "require": "./dist/console-logger/*.js"
+    },
+    "./date-formatter/*": {
+      "types": "./dist/date-formatter/*.d.ts",
+      "require": "./dist/date-formatter/*.js"
+    },
+    "./hash-password/*": {
+      "types": "./dist/hash-password/*.d.ts",
+      "require": "./dist/hash-password/*.js"
+    },
+    "./json-web-token/*": {
+      "types": "./dist/json-web-token/*.d.ts",
+      "require": "./dist/json-web-token/*.js"
+    }
+  },
   "scripts": {
     "dev": "tsc -watch",
     "build": "tsc",

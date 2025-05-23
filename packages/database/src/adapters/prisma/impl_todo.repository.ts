@@ -9,6 +9,7 @@ import {
   UpdateTodoDTO,
 } from "@todo/core/repositories/todo.repository";
 
+// todo: filter out soft deleted items
 export class PrismaTodoRepository implements TodoRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -52,7 +53,10 @@ export class PrismaTodoRepository implements TodoRepository {
 
   private toTodo(todo: PrismaTodo): Todo {
     return {
-      ...todo,
+      id: todo.id,
+      title: todo.title,
+      completed: todo.completed,
+      description: todo.description,
     };
   }
 }
