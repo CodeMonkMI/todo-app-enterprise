@@ -39,7 +39,7 @@ export const singleTodo = async (req: Request, res: Response) => {
   const viewTodoUseCase = new ViewTodoUseCase(getTodoRepository());
   const todo = await viewTodoUseCase.execute(id);
 
-  res.status(201).json(todo);
+  res.status(200).json(todo);
   return;
 };
 
@@ -55,7 +55,7 @@ export const updateTodo = async (req: Request, res: Response) => {
   const updateTodoUseCase = new UpdateTodoUseCase(getTodoRepository());
   const todo = await updateTodoUseCase.execute(id, data);
 
-  res.status(201).json(todo);
+  res.status(202).json(todo);
   return;
 };
 
@@ -65,6 +65,6 @@ export const removeTodo = async (req: Request, res: Response) => {
   const deleteTodoUseCase = new DeleteTodoUseCase(getTodoRepository());
   const todo = await deleteTodoUseCase.execute(id);
 
-  res.status(201).json(todo);
+  res.status(204).json(todo);
   return;
 };

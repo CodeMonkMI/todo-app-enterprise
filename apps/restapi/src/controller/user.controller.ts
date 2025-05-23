@@ -45,7 +45,7 @@ export const singleUser = async (req: Request, res: Response) => {
   const viewUserUseCase = new ViewUserUseCase(getUserRepository());
   const user = await viewUserUseCase.execute(id);
 
-  res.status(201).json(user);
+  res.status(200).json(user);
   return;
 };
 
@@ -61,7 +61,7 @@ export const updateUser = async (req: Request, res: Response) => {
   const updateUserUseCase = new UpdateUserUseCase(getUserRepository());
   const user = await updateUserUseCase.execute(id, data);
 
-  res.status(201).json(user);
+  res.status(202).json(user);
   return;
 };
 
@@ -71,6 +71,6 @@ export const removeUser = async (req: Request, res: Response) => {
   const deleteUserUseCase = new DeleteUserUseCase(getUserRepository());
   const user = await deleteUserUseCase.execute(id);
 
-  res.status(201).json(user);
+  res.status(204).json(user);
   return;
 };

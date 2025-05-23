@@ -9,7 +9,7 @@ export class UserLoginUseCase implements BaseUseCase<string> {
   constructor(
     private readonly user: UserRepository,
     private readonly hashPassword: HashPassword,
-    private readonly jsonwebtoken: JsonWebToken<{ id: string }>
+    private readonly jsonwebtoken: JsonWebToken<{ id: string; role: string }>
   ) {}
 
   async execute(email: string, password: string): Promise<string> {
@@ -25,11 +25,15 @@ export class UserLoginUseCase implements BaseUseCase<string> {
       throw new ImplValidationError(400, "Failed to login!", errors);
     }
 
-    const isValid = this.hashPassword.compare(password, user.password);
+    const isValid = await this.hashPassword.compare(password, user.password);
+
     if (!isValid)
       throw new ImplValidationError(400, "Failed to login!", errors);
 
-    const token: string = await this.jsonwebtoken.sign({ id: user.id });
+    const token: string = await this.jsonwebtoken.sign({
+      id: user.id,
+      role: user.role.toLocaleLowerCase(),
+    });
 
     return token;
   }

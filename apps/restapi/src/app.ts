@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import morgan from "morgan";
+import authRouter from "./routers/auth.router";
 import todoRouter from "./routers/todo.router";
 import userRouter from "./routers/user.router";
 
@@ -20,6 +21,7 @@ export function createApp() {
 
   app.use("/todos", todoRouter);
   app.use("/users", userRouter);
+  app.use("/auth", authRouter);
 
   // health route
   app.get("/health", (req: Request, res: Response): any => {

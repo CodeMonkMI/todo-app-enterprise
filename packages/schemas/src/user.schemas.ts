@@ -11,7 +11,3 @@ export const CreateUserSchema = z.object({
     .max(32, "Password must not be more than 32 chars"),
   role: z.nativeEnum(UserRoleEnum),
 });
-
-export const UpdateUserSchema = CreateUserSchema.omit({
-  password: true,
-}).partial();
