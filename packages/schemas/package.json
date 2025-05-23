@@ -1,0 +1,32 @@
+{
+  "name": "@todo/schemas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc -watch",
+    "build": "tsc",
+    "test": "jest",
+    "clear": "rimraf dist",
+    "check-types": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@todo/eslint-config": "workspace:*",
+    "@todo/typescript-config": "workspace:*",
+    "@todo/core": "workspace:*",
+    "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "zod": "^3.25.23"
+  }
+}

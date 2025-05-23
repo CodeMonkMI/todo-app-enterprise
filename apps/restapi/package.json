@@ -17,12 +17,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@todo/eslint-config": "workspace:*",
-    "@todo/typescript-config": "workspace:*",
     "@todo/core": "workspace:*",
     "@todo/database": "workspace:*",
     "@todo/errors": "workspace:*",
     "@todo/shared": "workspace:*",
+    "@todo/schemas": "workspace:*",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -31,6 +30,8 @@
     "zod": "^3.25.23"
   },
   "devDependencies": {
+    "@todo/eslint-config": "workspace:*",
+    "@todo/typescript-config": "workspace:*",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/morgan": "^1.9.9",

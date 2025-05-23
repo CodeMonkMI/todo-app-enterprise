@@ -4,6 +4,9 @@ import { UpdateUserUseCase } from "@todo/core/use-cases/udpate-user";
 import { ViewAllUsersUseCase } from "@todo/core/use-cases/view-all-user";
 import { ViewUserUseCase } from "@todo/core/use-cases/view-user";
 import { getUserRepository } from "@todo/database";
+import { ImplValidationError } from "@todo/errors/custom-error/validation-error";
+import { ZodError } from "@todo/errors/interface/ValidationError";
+import { CreateUserSchema, UpdateUserSchema } from "@todo/schemas";
 import { BcryptJsHashPassword } from "@todo/shared";
 import { Request, Response } from "express";
 
@@ -17,8 +20,12 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  // todo: add validation with zod
-  const data = req.body;
+  const parsedData = CreateUserSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const errors = parsedData.error.errors as ZodError[];
+    throw new ImplValidationError(400, "Todo Creation failed!", errors);
+  }
+  const data = parsedData.data;
 
   console.log(data);
   const createUserUseCase = new CreateNewUserUseCase(
@@ -43,7 +50,11 @@ export const singleUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-  // user: add validation with zod
+  const parsedData = UpdateUserSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const errors = parsedData.error.errors as ZodError[];
+    throw new ImplValidationError(400, "Todo Creation failed!", errors);
+  }
   const id = req.params.id;
   const data = req.body;
 
