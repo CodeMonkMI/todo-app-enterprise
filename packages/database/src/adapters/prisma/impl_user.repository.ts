@@ -10,7 +10,6 @@ import {
   UserWithPassword,
 } from "@todo/core/repositories/user.repository";
 
-// todo: filter all soft delete element
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -19,12 +18,16 @@ export class PrismaUserRepository implements UserRepository {
     pagination?: UserPagination
   ): Promise<User[]> {
     // todo implement pagination and filter
-    const users = await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany({
+      where: {
+        deletedAt: null,
+      },
+    });
     return users.map(this.toUser);
   }
   async findById(id: UserID): Promise<null | User> {
     const user = await this.prisma.user.findFirst({
-      where: { id: id as string },
+      where: { id: id as string, deletedAt: null },
     });
     if (!user) return null;
     return this.toUser(user);
@@ -37,7 +40,7 @@ export class PrismaUserRepository implements UserRepository {
   }
   async findByEmail(email: string): Promise<null | User> {
     const user = await this.prisma.user.findUnique({
-      where: { email },
+      where: { email, deletedAt: null },
     });
     if (!user) return null;
     return this.toUser(user);
@@ -49,7 +52,7 @@ export class PrismaUserRepository implements UserRepository {
    */
   findByEmailWithPassword(email: string): Promise<null | UserWithPassword> {
     return this.prisma.user.findUnique({
-      where: { email },
+      where: { email, deletedAt: null },
     });
   }
   async update(id: UserID, data: UpdateUserDTO): Promise<User> {
@@ -66,7 +69,11 @@ export class PrismaUserRepository implements UserRepository {
     });
     return this.toUser(updatedUser);
   }
-  remove(id: UserID): Promise<unknown> {
+  async remove(id: UserID): Promise<unknown> {
+    const user = await this.findById(id);
+    if (!user) {
+      throw new Error("User not found!");
+    }
     return this.prisma.user.update({
       where: { id: id as string },
       data: {
@@ -75,7 +82,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  private toUser(user: Omit<PrismaUser, "password">): User {
+  private toUser(user: PrismaUser): User {
     return {
       email: user.email,
       id: user.id,

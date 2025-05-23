@@ -9,7 +9,6 @@ import {
   UpdateTodoDTO,
 } from "@todo/core/repositories/todo.repository";
 
-// todo: filter out soft deleted items
 export class PrismaTodoRepository implements TodoRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -18,13 +17,17 @@ export class PrismaTodoRepository implements TodoRepository {
     pagination?: TodoPagination
   ): Promise<Todo[]> {
     // todo: add filter and pagination
-    const todos = await this.prisma.todo.findMany();
+    const todos = await this.prisma.todo.findMany({
+      where: {
+        deletedAt: null,
+      },
+    });
     return todos.map(this.toTodo);
   }
 
   async findById(id: TodoID): Promise<null | Todo> {
     const findTodo = await this.prisma.todo.findUnique({
-      where: { id: id as string },
+      where: { id: id as string, deletedAt: null },
     });
     if (!findTodo) return null;
     return this.toTodo(findTodo);
@@ -38,14 +41,18 @@ export class PrismaTodoRepository implements TodoRepository {
   }
 
   async update(id: TodoID, data: UpdateTodoDTO): Promise<Todo> {
+    const findTodo = await this.findById(id);
+    if (!findTodo) throw new Error("Todo not found");
     const updatedTodo = await this.prisma.todo.update({
-      where: { id: id as string },
+      where: { id: id as string, deletedAt: null },
       data,
     });
     return this.toTodo(updatedTodo);
   }
 
   async remove(id: TodoID): Promise<unknown> {
+    const findTodo = await this.findById(id);
+    if (!findTodo) throw new Error("Todo not found");
     return await this.prisma.todo.delete({
       where: { id: id as string },
     });
