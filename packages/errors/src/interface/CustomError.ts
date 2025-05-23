@@ -1,5 +1,5 @@
 export interface CustomError {
-  getCode(): number | string;
+  getCode(): number;
   getMessage(): string;
   getErrors(): unknown[];
 }

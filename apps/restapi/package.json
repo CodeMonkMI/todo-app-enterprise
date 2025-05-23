@@ -21,6 +21,7 @@
     "@todo/typescript-config": "workspace:*",
     "@todo/core": "workspace:*",
     "@todo/database": "workspace:*",
+    "@todo/errors": "workspace:*",
     "@todo/shared": "workspace:*",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",

@@ -1,12 +1,12 @@
-import { CustomError } from "@todo/core/interfaces/CustomError";
+import { CustomError } from "@/interface/CustomError";
 
 export class BasicError implements CustomError {
   constructor(
-    private readonly code: string | number,
+    private readonly code: number,
     private message: string,
     private errors: string[]
   ) {}
-  getCode(): number | string {
+  getCode(): number {
     return this.code;
   }
   getMessage(): string {

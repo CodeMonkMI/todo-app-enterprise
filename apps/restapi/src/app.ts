@@ -1,3 +1,5 @@
+import { BasicError } from "@todo/errors/custom-error/basic-error";
+import { ImplValidationError } from "@todo/errors/custom-error/validation-error";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
@@ -34,8 +36,17 @@ export function createApp() {
 
   // 500 internal server error handler
   app.use((err: any, _req: any, res: Response, _next: any) => {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    if (err instanceof BasicError) {
+      res.status(err.getCode()).json({ message: err.getMessage() });
+      return;
+    }
+    if (err instanceof ImplValidationError) {
+      res.status(err.getCode()).json(err.getErrors());
+      return;
+    }
+    res
+      .status(500)
+      .json({ message: "Something Went wrong! Please try again later!" });
   });
 
   return app;

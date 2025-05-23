@@ -12,6 +12,10 @@
     "./custom-error/*": {
       "types": "./dist/custom-error/*.d.ts",
       "require": "./dist/custom-error/*.js"
+    },
+    "./interface/*": {
+      "types": "./dist/interface/*.d.ts",
+      "require": "./dist/interface/*.js"
     }
   },
   "scripts": {

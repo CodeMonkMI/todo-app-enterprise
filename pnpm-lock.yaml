@@ -26,6 +26,9 @@ importers:
       '@todo/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@todo/errors':
+        specifier: workspace:*
+        version: link:../../packages/errors
       '@todo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
