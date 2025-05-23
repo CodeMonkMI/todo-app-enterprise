@@ -1,14 +1,27 @@
 import { BasicError } from "@todo/errors/custom-error/basic-error";
 import { ImplValidationError } from "@todo/errors/custom-error/validation-error";
+import { PermissionManger } from "@todo/pm";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import morgan from "morgan";
+import passport from "passport";
+import { authMiddleware } from "./niddleware/auth.middleware";
 import authRouter from "./routers/auth.router";
 import todoRouter from "./routers/todo.router";
 import userRouter from "./routers/user.router";
 
 dotenv.config();
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      user?: User;
+      pm?: PermissionManger;
+    }
+  }
+}
 
 export function createApp() {
   const app: Express = express();
@@ -18,6 +31,10 @@ export function createApp() {
   app.use(morgan("dev"));
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+
+  // auth middleware
+  app.use(passport.initialize());
+  authMiddleware.init();
 
   app.use("/todos", todoRouter);
   app.use("/users", userRouter);
