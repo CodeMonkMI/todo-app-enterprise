@@ -9,34 +9,35 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js"
     },
-    "./use-cases": {
-      "types": "./dist/use-cases/*.d.ts",
-      "require": "./dist/use-cases/*.d.ts"
-    },
-    "./entities": {
+    "./entities/*": {
       "types": "./dist/entities/*.d.ts",
-      "require": "./dist/entities/*.d.ts"
+      "require": "./dist/entities/*.js"
     },
-    "./interfaces": {
+    "./interfaces/*": {
       "types": "./dist/interfaces/*.d.ts",
-      "require": "./dist/interfaces/*.d.ts"
+      "require": "./dist/interfaces/*.js"
     },
-    "./repositories": {
+    "./repositories/*": {
       "types": "./dist/repositories/*.d.ts",
-      "require": "./dist/repositories/*.d.ts"
+      "require": "./dist/repositories/*.js"
+    },
+    "./use-cases/*": {
+      "types": "./dist/use-cases/*.d.ts",
+      "require": "./dist/use-cases/*.js"
     }
   },
   "scripts": {
     "dev": "tsc -watch",
     "build": "tsc",
     "test": "jest",
-    "clear": "rimref dist",
+    "clear": "rimraf dist",
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
     "@todo/eslint-config": "workspace:*",
     "@todo/typescript-config": "workspace:*",
-    "bcryptjs": "^3.0.2"
+    "bcryptjs": "^3.0.2",
+    "rimraf": "^6.0.1"
   },
   "keywords": [],
   "author": "",

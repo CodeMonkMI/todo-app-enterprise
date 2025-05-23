@@ -1,6 +1,7 @@
 {
     "extends": "@todo/typescript-config/base.json",
     "compilerOptions": {
+        "target": "es2017",
         "outDir": "./dist",
         "rootDir": "./src",
         "baseUrl": ".",
@@ -17,5 +18,5 @@
     "exclude": [
         "node_modules",
         "dist"
-    ]
+    ],
 }

@@ -12,9 +12,9 @@ export type UserPagination = {
 export type UserID = string | number;
 
 export enum UserRoleEnum {
-  SUPER_ADMIN = "super_admin",
-  ADMIN = "admin",
-  USER = "user",
+  SUPER_ADMIN = "SUPER_ADMIN",
+  ADMIN = "ADMIN",
+  USER = "USER",
 }
 
 export type UserRole = `${UserRoleEnum}`;
@@ -24,6 +24,12 @@ export type CreateUserDTO = {
   name: string;
   password: string;
   role: UserRole;
+};
+export type UpdateUserDTO = {
+  email?: string;
+  name?: string;
+  password?: string;
+  role?: UserRole;
 };
 
 export type UserWithPassword = User & {

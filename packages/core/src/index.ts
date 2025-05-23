@@ -1,1 +1,3 @@
-console.log("core");
+export const greet = (name: string) => {
+  return `Hello ${name}`;
+};
