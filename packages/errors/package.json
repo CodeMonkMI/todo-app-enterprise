@@ -1,0 +1,33 @@
+{
+  "name": "@todo/errors",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./custom-error/*": {
+      "types": "./dist/custom-error/*.d.ts",
+      "require": "./dist/custom-error/*.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc -watch",
+    "build": "tsc",
+    "test": "jest",
+    "clear": "rimraf dist",
+    "check-types": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@todo/eslint-config": "workspace:*",
+    "@todo/typescript-config": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.9",
+    "rimraf": "^6.0.1"
+  }
+}

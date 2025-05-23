@@ -5,13 +5,16 @@ import {
   TodoID,
   TodoRepository,
 } from "@/repositories/todo.repository";
+import { BasicError } from "@todo/errors/custom-error/basic-error";
 
 export class UpdateTodoUseCase implements BaseUseCase<Todo> {
   constructor(private readonly todo: TodoRepository) {}
 
   async execute(id: TodoID, data: CreateTodoDTO): Promise<Todo> {
     const todo = await this.todo.findById(id);
-    if (!todo) throw new Error("Todo not found"); // todo add custom exception
+    if (!todo) {
+      throw new BasicError(404, "Todo not found!", ["Todo not found!"]);
+    }
 
     return await this.todo.update(id, data);
   }

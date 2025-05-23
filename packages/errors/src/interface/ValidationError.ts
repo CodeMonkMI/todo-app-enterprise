@@ -1,13 +1,9 @@
-export interface CustomError {
-  getCode(): number | string;
-  getMessage(): string;
-  getErrors(): unknown[];
-}
+import { CustomError } from "./CustomError";
 
 export type ZodError = {
   code: string | number;
-  expected: string;
-  received: string;
+  expected?: string;
+  received?: string;
   path: string[];
   message: string;
 };

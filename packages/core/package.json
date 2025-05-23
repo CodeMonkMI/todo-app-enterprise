@@ -36,6 +36,7 @@
   "dependencies": {
     "@todo/eslint-config": "workspace:*",
     "@todo/typescript-config": "workspace:*",
+    "@todo/errors": "workspace:*",
     "bcryptjs": "^3.0.2",
     "rimraf": "^6.0.1"
   },

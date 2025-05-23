@@ -2,6 +2,7 @@ import { User } from "@/entities/user.entities";
 import { BaseUseCase } from "@/interfaces/BaseUseCase";
 import { HashPassword } from "@/interfaces/HashPassword";
 import { CreateUserDTO, UserRepository } from "@/repositories/user.repository";
+import { BasicError } from "@todo/errors/custom-error/basic-error";
 
 export class CreateNewUserUseCase implements BaseUseCase<User> {
   constructor(
@@ -11,7 +12,10 @@ export class CreateNewUserUseCase implements BaseUseCase<User> {
 
   async execute(data: CreateUserDTO): Promise<User> {
     const user = await this.user.findByEmail(data.email);
-    if (user) throw new Error("User is already exists");
+    if (user)
+      throw new BasicError(400, "User is already exists", [
+        "User is already exists",
+      ]);
 
     const hashPassword = await this.hashPassword.hash(data.password);
     const createdUser = await this.user.create({

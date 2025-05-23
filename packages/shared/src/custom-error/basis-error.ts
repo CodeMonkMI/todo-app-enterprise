@@ -1,6 +1,6 @@
 import { CustomError } from "@todo/core/interfaces/CustomError";
 
-export class DatabaseError implements CustomError {
+export class BasicError implements CustomError {
   constructor(
     private readonly code: string | number,
     private message: string,
