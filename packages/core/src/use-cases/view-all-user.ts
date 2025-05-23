@@ -6,15 +6,15 @@ import {
   UserRepository,
 } from "@/repositories/user.repository";
 
-export class ViewAllUsersUseCase implements BaseUseCase<User[]> {
+export class ViewAllUsersUseCase
+  implements BaseUseCase<{ total: number; data: User[] }>
+{
   constructor(private readonly user: UserRepository) {}
 
-  async execute(data?: {
+  async execute(options?: {
     filter?: UserFilter;
     pagination?: UserPagination;
-  }): Promise<User[]> {
-    const user = await this.user.findAll(data?.filter, data?.pagination);
-    if (!user) return [];
-    return user;
+  }): Promise<{ total: number; data: User[] }> {
+    return await this.user.findAll(options);
   }
 }

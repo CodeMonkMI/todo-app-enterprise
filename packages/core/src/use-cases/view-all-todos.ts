@@ -3,21 +3,19 @@ import { BaseUseCase } from "@/interfaces/BaseUseCase";
 import { TodoFilter, TodoRepository } from "@/repositories/todo.repository";
 import { UserID, UserPagination } from "@/repositories/user.repository";
 
-export class ViewAllTodosUseCase implements BaseUseCase<Todo[]> {
+export class ViewAllTodosUseCase
+  implements BaseUseCase<{ total: number; data: Todo[] }>
+{
   constructor(private readonly todo: TodoRepository) {}
 
   async execute(
     userId: UserID,
-    data?: {
+    options?: {
       filter?: TodoFilter;
       pagination?: UserPagination;
     }
-  ): Promise<Todo[]> {
-    const todos = await this.todo.findAll(
-      userId,
-      data?.filter,
-      data?.pagination
-    );
+  ): Promise<{ total: number; data: Todo[] }> {
+    const todos = await this.todo.findAll(userId, options);
     return todos;
   }
 }

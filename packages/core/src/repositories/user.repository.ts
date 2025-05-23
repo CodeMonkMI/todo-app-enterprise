@@ -36,7 +36,10 @@ export type UserWithPassword = User & {
 };
 
 export interface UserRepository {
-  findAll(filter?: UserFilter, pagination?: UserPagination): Promise<User[]>;
+  findAll(options?: {
+    filter?: UserFilter;
+    pagination?: UserPagination;
+  }): Promise<{ total: number; data: User[] }>;
   findById(id: UserID): Promise<User>;
   create(data: CreateUserDTO): Promise<User>;
   findByEmail(email: string): Promise<User>;

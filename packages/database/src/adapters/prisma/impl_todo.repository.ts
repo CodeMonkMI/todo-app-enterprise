@@ -15,19 +15,27 @@ export class PrismaTodoRepository implements TodoRepository {
 
   async findAll(
     userId: UserID,
-    filter?: TodoFilter,
-    pagination?: TodoPagination
-  ): Promise<Todo[]> {
-    // todo: add pagination
+    options?: { filter?: TodoFilter; pagination?: TodoPagination }
+  ): Promise<{ total: number; data: Todo[] }> {
+    const page = options?.pagination?.page;
+    const limit = options?.pagination?.limit;
+
+    const whereOptions = { deletedAt: null, userId, ...options?.filter };
 
     const todos = await this.prisma.todo.findMany({
       where: {
-        deletedAt: null,
-        userId,
-        ...filter,
+        ...whereOptions,
       },
+      skip: page && limit ? limit * page - limit : undefined,
+      take: limit,
     });
-    return todos.map(this.toTodo);
+    const total = await this.count(whereOptions);
+    const data = todos.map(this.toTodo);
+    return { total: Math.ceil(total / (limit ?? 1)), data };
+  }
+
+  private async count(options: any): Promise<number> {
+    return this.prisma.todo.count({ where: options });
   }
 
   async findById(userId: UserID, id: TodoID): Promise<null | Todo> {

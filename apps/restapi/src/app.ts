@@ -63,6 +63,7 @@ export function createApp() {
       res.status(err.getCode()).json(err.getErrors());
       return;
     }
+    console.log(err);
     res
       .status(500)
       .json({ message: "Something Went wrong! Please try again later!" });

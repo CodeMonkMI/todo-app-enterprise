@@ -12,11 +12,22 @@ import { Request, Response } from "express";
 
 const hashPassword = new BcryptJsHashPassword();
 
-export const getAllUsers = async (_req: Request, res: Response) => {
-  const viewAllUsersUseCase = new ViewAllUsersUseCase(getUserRepository());
-  const user = await viewAllUsersUseCase.execute();
+export const getAllUsers = async (req: Request, res: Response) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
 
-  res.status(200).json(user);
+  const pagination = {
+    limit,
+    page,
+    total: 0,
+  };
+
+  const viewAllUsersUseCase = new ViewAllUsersUseCase(getUserRepository());
+  const { total, data: users } = await viewAllUsersUseCase.execute({
+    pagination,
+  });
+  pagination.total = total;
+  res.status(200).json({ pagination, data: users });
 };
 
 export const createUser = async (req: Request, res: Response) => {

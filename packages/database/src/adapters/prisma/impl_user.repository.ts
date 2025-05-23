@@ -13,18 +13,31 @@ import {
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async findAll(
-    filter?: UserFilter,
-    pagination?: UserPagination
-  ): Promise<User[]> {
-    // todo implement pagination and filter
+  async findAll(options?: {
+    filter?: UserFilter;
+    pagination?: UserPagination;
+  }): Promise<{ total: number; data: User[] }> {
+    const page = options?.pagination?.page;
+    const limit = options?.pagination?.limit;
+
+    const whereOptions = { deletedAt: null, ...options?.filter };
+
     const users = await this.prisma.user.findMany({
       where: {
-        deletedAt: null,
+        ...whereOptions,
       },
+      skip: page && limit ? limit * page - limit : undefined,
+      take: limit,
     });
-    return users.map(this.toUser);
+    const total = await this.count(whereOptions);
+    const data = users.map(this.toUser);
+    return { total: Math.ceil(total / (limit ?? 1)), data };
   }
+
+  private async count(options: any): Promise<number> {
+    return this.prisma.user.count({ where: options });
+  }
+
   async findById(id: UserID): Promise<null | User> {
     const user = await this.prisma.user.findFirst({
       where: { id: id as string, deletedAt: null },

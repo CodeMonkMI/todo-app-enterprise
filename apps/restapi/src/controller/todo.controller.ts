@@ -11,10 +11,24 @@ import { CreateTodoSchema, UpdateTodoSchema } from "@todo/schemas";
 import { Request, Response } from "express";
 
 export const getAllTodos = async (req: Request, res: Response) => {
-  const viewAllTodosUseCase = new ViewAllTodosUseCase(getTodoRepository());
-  const todos = await viewAllTodosUseCase.execute((req.user as User).id);
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
 
-  res.status(200).json(todos);
+  const pagination = {
+    limit,
+    page,
+    total: 0,
+  };
+
+  const viewAllTodosUseCase = new ViewAllTodosUseCase(getTodoRepository());
+  const { total, data: todos } = await viewAllTodosUseCase.execute(
+    (req.user as User).id,
+    {
+      pagination,
+    }
+  );
+  pagination.total = total;
+  res.status(200).json({ pagination, data: todos });
 };
 
 export const createTodo = async (req: Request, res: Response) => {

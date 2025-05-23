@@ -28,9 +28,8 @@ export type UpdateTodoDTO = {
 export interface TodoRepository {
   findAll(
     userId: UserID,
-    filter?: TodoFilter,
-    pagination?: TodoPagination
-  ): Promise<Todo[]>;
+    options?: { filter?: TodoFilter; pagination?: TodoPagination }
+  ): Promise<{ total: number; data: Todo[] }>;
   findById(userId: UserID, id: TodoID): Promise<null | Todo>;
   create(data: CreateTodoDTO): Promise<Todo>;
   update(userId: UserID, id: TodoID, data: CreateTodoDTO): Promise<Todo>;
