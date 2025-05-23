@@ -1,12 +1,12 @@
 import { Todo } from "@/entities/todo.entities";
 import { BaseUseCase } from "@/interfaces/BaseUseCase";
-import { TodoID, TodoRepository } from "@/repositories/todo.repository";
+import { TodoRepository } from "@/repositories/todo.repository";
 
-export class ViewAllTodosUseCase implements BaseUseCase<Todo> {
+export class ViewAllTodosUseCase implements BaseUseCase<Todo[]> {
   constructor(private readonly todo: TodoRepository) {}
 
-  async execute(id: TodoID): Promise<Todo> {
-    const todo = await this.todo.findById(id);
-    return todo;
+  async execute(): Promise<Todo[]> {
+    const todos = await this.todo.findAll();
+    return todos;
   }
 }
