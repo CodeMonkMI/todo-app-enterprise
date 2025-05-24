@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TokenData, useAuth } from "@/contexts/AuthContext";
+import { authToken } from "@/lib/token/AuthToken";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
@@ -25,6 +27,7 @@ export function LoginForm() {
     isPending,
     isError,
     error,
+    data,
   } = useLogin();
 
   const {
@@ -36,6 +39,8 @@ export function LoginForm() {
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(LoginUserSchema),
   });
+
+  const { login: authLogin } = useAuth();
 
   const onSubmit = async (values: LoginFormInputs) => {
     await login(values);
@@ -49,9 +54,14 @@ export function LoginForm() {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/dashboard");
+      const token = (data as any).data.token;
+      authToken.set(token);
+      const user = authToken.decode(token) as TokenData;
+      authLogin(user);
+      navigate("/");
     }
-  }, [isSuccess, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, data]);
 
   useEffect(() => {
     if (isError) {

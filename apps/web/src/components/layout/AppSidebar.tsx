@@ -1,70 +1,74 @@
-import React from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-} from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
-import { CheckSquare, Users, User, LogOut, Shield, Settings } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+} from "@/components/ui/sidebar";
+import { useAuth } from "@/contexts/AuthContext";
+import { authToken } from "@/lib/token/AuthToken";
+import {
+  CheckSquare,
+  LogOut,
+  Settings,
+  Shield,
+  User,
+  Users,
+} from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const menuItems = [
   {
-    title: 'My Todos',
-    url: '/dashboard',
+    title: "My Todos",
+    url: "/dashboard",
     icon: CheckSquare,
-    roles: ['USER', 'ADMIN', 'SUPER_ADMIN'],
+    roles: ["USER", "ADMIN", "SUPER_ADMIN"],
   },
   {
-    title: 'User Management',
-    url: '/users',
+    title: "User Management",
+    url: "/users",
     icon: Users,
-    roles: ['ADMIN', 'SUPER_ADMIN'],
+    roles: ["ADMIN", "SUPER_ADMIN"],
   },
   {
-    title: 'Profile',
-    url: '/profile',
+    title: "Profile",
+    url: "/profile",
     icon: User,
-    roles: ['USER', 'ADMIN', 'SUPER_ADMIN'],
+    roles: ["USER", "ADMIN", "SUPER_ADMIN"],
   },
   {
-    title: 'Settings',
-    url: '/settings',
+    title: "Settings",
+    url: "/settings",
     icon: Settings,
-    roles: ['USER', 'ADMIN', 'SUPER_ADMIN'],
+    roles: ["USER", "ADMIN", "SUPER_ADMIN"],
   },
 ];
 
 export function AppSidebar() {
-  const { user, logout } = useAuth();
+  const { logout, role, id } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    authToken.remove();
+    navigate("/");
   };
 
-  const filteredMenuItems = menuItems.filter(item => 
-    user && item.roles.includes(user.role)
-  );
-
   const getRoleBadgeColor = (role: string) => {
-    switch (role) {
-      case 'SUPER_ADMIN':
-        return 'bg-red-100 text-red-800';
-      case 'ADMIN':
-        return 'bg-blue-100 text-blue-800';
+    switch (role.toUpperCase()) {
+      case "SUPER_ADMIN":
+        return "bg-red-100 text-red-800";
+      case "ADMIN":
+        return "bg-blue-100 text-blue-800";
       default:
-        return 'bg-green-100 text-green-800';
+        return "bg-green-100 text-green-800";
     }
   };
 
@@ -87,10 +91,10 @@ export function AppSidebar() {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {filteredMenuItems.map((item) => (
+              {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton 
-                    asChild 
+                  <SidebarMenuButton
+                    asChild
                     isActive={location.pathname === item.url}
                   >
                     <a href={item.url} className="flex items-center space-x-3">
@@ -113,22 +117,20 @@ export function AppSidebar() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate">
-                {user?.name}
+                {"Real User"}
               </p>
               <div className="flex items-center space-x-2">
-                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getRoleBadgeColor(user?.role || '')}`}>
+                <span
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getRoleBadgeColor(role || "")}`}
+                >
                   <Shield className="w-3 h-3 mr-1" />
-                  {user?.role.replace('_', ' ')}
+                  {role.replace("_", " ")}
                 </span>
               </div>
             </div>
           </div>
-          
-          <Button 
-            variant="outline" 
-            className="w-full" 
-            onClick={handleLogout}
-          >
+
+          <Button variant="outline" className="w-full" onClick={handleLogout}>
             <LogOut className="w-4 h-4 mr-2" />
             Sign Out
           </Button>

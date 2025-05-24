@@ -2,9 +2,9 @@
 import { jwtDecode } from "jwt-decode";
 import { LocalStorage } from "../localStorage";
 
-class AuthToken extends LocalStorage {
+class AuthToken<T> extends LocalStorage {
   key: string = "authToken";
-  decode(token: string = this.get()) {
+  decode(token: string = this.get()): T {
     return jwtDecode(token);
   }
 }
