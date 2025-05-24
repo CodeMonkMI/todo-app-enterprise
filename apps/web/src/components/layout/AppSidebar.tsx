@@ -12,15 +12,19 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserQuery } from "@/features/users/api/userFetchApi";
 import { authToken } from "@/lib/token/AuthToken";
+import { User } from "@todo/core/entities/user.entities";
+
 import {
   CheckSquare,
   LogOut,
   Settings,
   Shield,
-  User,
+  User as UserIcon,
   Users,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const menuItems = [
@@ -39,7 +43,7 @@ const menuItems = [
   {
     title: "Profile",
     url: "/profile",
-    icon: User,
+    icon: UserIcon,
     roles: ["USER", "ADMIN", "SUPER_ADMIN"],
   },
   {
@@ -52,6 +56,16 @@ const menuItems = [
 
 export function AppSidebar() {
   const { logout, role, id } = useAuth();
+
+  const [user, setUser] = useState<User | null>(null);
+  const { data: userData, isSuccess, isError } = useUserQuery(id);
+
+  useEffect(() => {
+    if (isSuccess && userData) {
+      setUser(userData);
+    }
+  }, [isSuccess, userData]);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -113,11 +127,11 @@ export function AppSidebar() {
         <div className="space-y-3">
           <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-gray-600" />
+              <UserIcon className="w-4 h-4 text-gray-600" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate">
-                {"Real User"}
+                {user?.name}
               </p>
               <div className="flex items-center space-x-2">
                 <span

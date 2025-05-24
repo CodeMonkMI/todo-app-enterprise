@@ -4,10 +4,10 @@ import { UsersContainer } from "@/features/users";
 import { Navigate } from "react-router-dom";
 
 export default function Users() {
-  const { user } = useAuth();
-
+  const { role } = useAuth();
+  console.log(role);
   // Check if user has permission to view users
-  if (!user || !["ADMIN", "SUPER_ADMIN"].includes(user.role)) {
+  if (!["ADMIN", "SUPER_ADMIN"].includes(role.toUpperCase())) {
     return <Navigate to="/dashboard" replace />;
   }
 

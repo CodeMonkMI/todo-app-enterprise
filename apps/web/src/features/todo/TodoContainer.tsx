@@ -8,13 +8,24 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTodos } from "@/contexts/TodoContext";
+import { User } from "@todo/core/entities/user.entities";
 import { CheckCircle, CheckSquare, Clock, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUserQuery } from "../users/api/userFetchApi";
 import { CreateTodoModal } from "./components/CreateTodoModal";
 import { TodoList } from "./components/TodoList";
 
 export function TodoContainer() {
-  const { user } = useAuth();
+  const [user, setUser] = useState<User | null>(null);
+  const { id } = useAuth();
+  const { data: userData, isSuccess } = useUserQuery(id);
+
+  useEffect(() => {
+    if (isSuccess && userData) {
+      setUser(userData);
+    }
+  }, [isSuccess, userData]);
+
   const { todos } = useTodos();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
