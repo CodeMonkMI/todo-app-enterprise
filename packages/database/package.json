@@ -29,6 +29,7 @@
   "dependencies": {
     "@prisma/client": "6.8.2",
     "@todo/core": "workspace:*",
+    "@todo/errors": "workspace:*",
     "@todo/eslint-config": "workspace:*",
     "@todo/typescript-config": "workspace:*",
     "rimraf": "^6.0.1"

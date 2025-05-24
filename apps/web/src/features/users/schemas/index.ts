@@ -1,5 +1,9 @@
-import { UserRoleEnum } from "@todo/core/repositories/user.repository";
 import { z } from "zod";
+export enum UserRoleEnum {
+  SUPER_ADMIN = "SUPER_ADMIN",
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
 
 export const CreateUserSchema = z.object({
   name: z.string().min(1, "Name is required!"),
@@ -11,7 +15,4 @@ export const CreateUserSchema = z.object({
     .max(32, "Password must not be more than 32 chars"),
   role: z.nativeEnum(UserRoleEnum),
 });
-
-export const UpdateUserSchema = CreateUserSchema.omit({
-  password: true,
-}).partial();
+export const UpdateUserSchema = CreateUserSchema.pick({ role: true });

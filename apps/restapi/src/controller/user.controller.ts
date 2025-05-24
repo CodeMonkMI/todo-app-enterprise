@@ -74,8 +74,9 @@ export const updateUser = async (req: Request, res: Response) => {
     const errors = parsedData.error.errors as ZodError[];
     throw new ImplValidationError(400, "Todo Creation failed!", errors);
   }
+
   const id = req.params.id;
-  const data = req.body;
+  const data = parsedData.data;
 
   const updateUserUseCase = new UpdateUserUseCase(getUserRepository());
   const user = await updateUserUseCase.execute(id, data);

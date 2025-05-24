@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
+import { useState } from "react";
+import { CreateUserModal } from "./CreateUserModal";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -12,11 +15,12 @@ const Header = () => {
           </p>
         </div>
 
-        <Button className="shadow-sm">
+        <Button className="shadow-sm" onClick={() => setIsOpen(true)}>
           <UserPlus className="w-4 h-4 mr-2" />
           Add User
         </Button>
       </div>
+      <CreateUserModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 };

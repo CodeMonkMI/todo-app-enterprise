@@ -8,7 +8,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { User } from "@todo/core/entities/user.entities";
 import { useEffect, useState } from "react";
-import { useUserQuery } from "../users/api/userFetchApi";
+import { useUserQuery } from "../users/api/userQueryApi";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
 import { TodoList } from "./components/TodoList";

@@ -195,15 +195,9 @@ importers:
       '@todo/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@todo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@todo/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
-      '@todo/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
       axios:
         specifier: ^1.9.0
         version: 1.9.0
@@ -277,6 +271,12 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.29)(@types/node@22.15.21)(typescript@5.8.3)))
+      '@todo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@todo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
       '@types/node':
         specifier: ^22.5.5
         version: 22.15.21
@@ -349,6 +349,9 @@ importers:
       '@todo/core':
         specifier: workspace:*
         version: link:../core
+      '@todo/errors':
+        specifier: workspace:*
+        version: link:../errors
       '@todo/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config

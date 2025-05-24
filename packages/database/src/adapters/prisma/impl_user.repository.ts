@@ -9,6 +9,7 @@ import {
   UserRepository,
   UserWithPassword,
 } from "@todo/core/repositories/user.repository";
+import { BasicError } from "@todo/errors/custom-error/basic-error";
 
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -39,8 +40,8 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async findById(id: UserID): Promise<null | User> {
-    const user = await this.prisma.user.findFirst({
-      where: { id: id as string, deletedAt: null },
+    const user = await this.prisma.user.findUnique({
+      where: { id, deletedAt: null },
     });
     if (!user) return null;
     return this.toUser(user);
@@ -71,21 +72,26 @@ export class PrismaUserRepository implements UserRepository {
   async update(id: UserID, data: UpdateUserDTO): Promise<User> {
     const user = await this.findById(id);
     if (!user) {
-      throw new Error("User not found!");
+      throw new BasicError(404, "User not found!", ["User not found!"]);
     }
 
+    const updatedUserData: any = {
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      ...data,
+    };
+
     const updatedUser = await this.prisma.user.update({
-      where: { id: id as string },
-      data: {
-        ...data,
-      },
+      where: { id },
+      data: updatedUserData,
     });
     return this.toUser(updatedUser);
   }
   async remove(id: UserID): Promise<unknown> {
     const user = await this.findById(id);
     if (!user) {
-      throw new Error("User not found!");
+      throw new BasicError(404, "User not found!", ["User not found!"]);
     }
     return this.prisma.user.update({
       where: { id: id as string },

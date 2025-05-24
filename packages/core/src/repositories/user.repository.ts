@@ -44,6 +44,6 @@ export interface UserRepository {
   create(data: CreateUserDTO): Promise<User>;
   findByEmail(email: string): Promise<User>;
   findByEmailWithPassword(email: string): Promise<UserWithPassword>;
-  update(id: UserID, data: CreateUserDTO): Promise<User>;
+  update(id: UserID, data: UpdateUserDTO): Promise<User>;
   remove(id: UserID): Promise<unknown>;
 }

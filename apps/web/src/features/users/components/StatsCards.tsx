@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { User } from "@todo/core/entities/user.entities";
 import { Shield, Users as UsersIcon } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
-import { useUsersQuery } from "../api/userFetchApi";
+import { useUsersQuery } from "../api/userQueryApi";
 
 const StatsCards = () => {
   const { role } = useAuth();

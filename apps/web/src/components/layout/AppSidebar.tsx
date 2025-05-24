@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUserQuery } from "@/features/users/api/userFetchApi";
+import { useUserQuery } from "@/features/users/api/userQueryApi";
 import { authToken } from "@/lib/token/AuthToken";
 import { User } from "@todo/core/entities/user.entities";
 

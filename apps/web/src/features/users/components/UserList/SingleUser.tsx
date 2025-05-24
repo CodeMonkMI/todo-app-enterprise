@@ -1,10 +1,21 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { User } from "@todo/core/entities/user.entities";
-import { Mail, Shield, Users as UsersIcon } from "lucide-react";
+import { AxiosError } from "axios";
+import { Edit2, Mail, Shield, Trash2, Users as UsersIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useUserDeleteMutations } from "../../api/userMutationApi";
+import { EditUserModal } from "../EditUserModal";
 type SingleUserProps = User;
 
 const SingleUser: React.FC<SingleUserProps> = (props) => {
+  const { toast } = useToast();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { mutateAsync: deleteUser, isError, error } = useUserDeleteMutations();
+
   const { email, id, name, role } = props;
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
@@ -16,6 +27,21 @@ const SingleUser: React.FC<SingleUserProps> = (props) => {
         return "bg-green-100 text-green-800";
     }
   };
+
+  useEffect(() => {
+    if (isError) {
+      if (error instanceof AxiosError) {
+        if (error.status === 403) {
+          toast({
+            variant: "destructive",
+            title: "Forbidden",
+            description: "You are not authorized to perform this action!",
+          });
+        }
+      }
+    }
+  }, [isError, error, toast]);
+
   return (
     <div
       key={id}
@@ -27,7 +53,13 @@ const SingleUser: React.FC<SingleUserProps> = (props) => {
         </div>
 
         <div>
-          <h4 className="font-medium text-gray-900">{name}</h4>
+          <h4 className="font-medium text-gray-900">
+            {name}
+            <Badge className={getRoleBadgeColor(role)}>
+              <Shield className="w-3 h-3 mr-1" />
+              {role.toLocaleLowerCase().replace("_", " ")}
+            </Badge>
+          </h4>
           <div className="flex items-center space-x-4 text-sm text-gray-500">
             <div className="flex items-center">
               <Mail className="w-3 h-3 mr-1" />
@@ -38,27 +70,33 @@ const SingleUser: React.FC<SingleUserProps> = (props) => {
       </div>
 
       <div className="flex items-center space-x-3">
-        <Badge className={getRoleBadgeColor(role)}>
-          <Shield className="w-3 h-3 mr-1" />
-          {role.replace("_", " ")}
-        </Badge>
-
         <div className="flex space-x-2">
-          <Button variant="outline" size="sm">
-            Edit
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsOpen(true)}
+            className="text-gray-500 hover:text-blue-600"
+          >
+            <Edit2 className="w-4 h-4" />
           </Button>
-          {(role.toUpperCase() === "SUPER_ADMIN" ||
-            (role.toUpperCase() === "ADMIN" && role === "USER")) && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-600 hover:text-red-700"
-            >
-              Delete
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              deleteUser(id);
+            }}
+            className="text-gray-500 hover:text-red-600"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
         </div>
       </div>
+      <EditUserModal
+        role={props.role as any}
+        id={props.id}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 };

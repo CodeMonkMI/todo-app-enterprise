@@ -8,7 +8,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { User } from "@todo/core/entities/user.entities";
 import { useEffect, useState } from "react";
-import { useUsersQuery } from "../../api/userFetchApi";
+import { useUsersQuery } from "../../api/userQueryApi";
 import SingleUser from "./SingleUser";
 
 export const UserList = () => {
