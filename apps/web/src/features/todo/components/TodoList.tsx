@@ -1,14 +1,27 @@
-
-import React from 'react';
-import { useTodos } from '@/contexts/TodoContext';
-import { TodoItem } from './TodoItem';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckSquare } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { Todo } from "@todo/core/entities/todo.entities";
+import { CheckSquare } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useTodosQuery } from "../api/userFetchApi";
+import { TodoItem } from "./TodoItem";
 
 export function TodoList() {
-  const { todos, isLoading } = useTodos();
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  if (isLoading) {
+  const { data: usersData, isSuccess, isPending } = useTodosQuery();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setTodos((usersData as any).data);
+    }
+  }, [isSuccess, usersData]);
+
+  if (isPending) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (
@@ -39,8 +52,8 @@ export function TodoList() {
     );
   }
 
-  const completedTodos = todos.filter(todo => todo.completed);
-  const pendingTodos = todos.filter(todo => !todo.completed);
+  const completedTodos = todos.filter((todo) => todo.completed);
+  const pendingTodos = todos.filter((todo) => !todo.completed);
 
   return (
     <div className="space-y-6">
