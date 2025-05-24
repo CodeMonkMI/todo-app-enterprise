@@ -15,7 +15,7 @@ import { EditTodoModal } from "./EditTodoModal";
 type TodoItemProps = Todo;
 
 export function TodoItem(props: TodoItemProps) {
-  const { completed, description, id, title } = props;
+  const { completed, description, id, title, createdAt } = props;
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -29,7 +29,13 @@ export function TodoItem(props: TodoItemProps) {
   const handleDelete = async () => {
     await deleteTodo(id);
   };
-
+  const formatDate = (dateString: Date) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
   return (
     <>
       <Card
@@ -63,7 +69,7 @@ export function TodoItem(props: TodoItemProps) {
                   <div className="flex items-center space-x-4 mt-3">
                     <div className="flex items-center text-xs text-gray-500">
                       <Calendar className="w-3 h-3 mr-1" />
-                      {/* Created {formatDate( createdAt)} */}
+                      Created {formatDate(createdAt)}
                     </div>
 
                     {completed && (

@@ -6,13 +6,19 @@ import { useTodosQuery } from "../api/todoQueryApi";
 const StatsCards = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  const { data: usersData, isSuccess } = useTodosQuery();
+  const { data: usersData, isSuccess, isError, error } = useTodosQuery();
 
   useEffect(() => {
     if (isSuccess) {
       setTodos((usersData as any).data);
     }
   }, [isSuccess, usersData]);
+
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+    }
+  }, [isError, error]);
 
   const completedCount = todos.filter((todo) => todo.completed).length;
   const pendingCount = todos.filter((todo) => !todo.completed).length;

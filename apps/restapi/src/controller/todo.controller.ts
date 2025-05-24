@@ -1,3 +1,4 @@
+import { Todo } from "@todo/core/entities/todo.entities";
 import { User } from "@todo/core/entities/user.entities";
 import { CreateTodoUseCase } from "@todo/core/use-cases/create-todo";
 import { DeleteTodoUseCase } from "@todo/core/use-cases/delete-todo";
@@ -13,7 +14,12 @@ import { Request, Response } from "express";
 export const getAllTodos = async (req: Request, res: Response) => {
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || undefined;
+  const completed = req.query.completed || undefined;
 
+  const filter: Partial<Todo> = {};
+  if (completed) {
+    filter.completed = completed === "true" ? true : false;
+  }
   const pagination: {
     limit: number | null | undefined;
     page: number;
@@ -29,6 +35,7 @@ export const getAllTodos = async (req: Request, res: Response) => {
     (req.user as User).id,
     {
       pagination,
+      filter: { ...filter },
     }
   );
   if (limit) {

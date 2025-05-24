@@ -10,25 +10,47 @@ type Pagination = {
   page: number;
   limit: number;
 };
-const fetchTodos = async (
-  pagination?: Pagination
-): Promise<Todo[] | undefined> => {
-  const query = pagination
-    ? Object.entries(pagination)
-        .map(([key, value]) => `${key}=${value}`)
-        .join("&")
-    : "";
+
+type Options = {
+  pagination?: Pagination;
+  filter?: { completed?: boolean };
+};
+
+const fetchTodos = async (options?: Options): Promise<Todo[] | undefined> => {
+  let query = "";
+  if (options!) {
+    const { pagination = null, filter = null } = options;
+
+    const query1 = pagination
+      ? Object.entries(pagination)
+          .map(([key, value]) => `${key}=${value}`)
+          .join("&")
+      : "";
+    const query2 = filter
+      ? Object.entries(filter)
+          .map(([key, value]) => `${key}=${value}`)
+          .join("&")
+      : "";
+    query = [query1, query2].filter(Boolean).join("&");
+  }
+
   const data: AxiosResponse = await axios.get(`${fetchTodosPath}?${query}`);
   return data.data;
 };
 
-export const useTodosQuery = (pagination?: Pagination) => {
-  const queryKey = pagination
-    ? [fetchTodosPath, pagination.limit, pagination.page]
-    : [fetchTodosPath];
+export const useTodosQuery = (options?: Options) => {
+  const queryKey: any[] = [fetchTodosPath];
+  if (options?.pagination) {
+    const { limit, page } = options.pagination;
+    queryKey.push(limit);
+    queryKey.push(page);
+  }
+  if (options?.filter) {
+    queryKey.push(options.filter.completed);
+  }
   return useQuery({
     queryKey,
-    queryFn: () => fetchTodos(pagination),
+    queryFn: () => fetchTodos(options),
   });
 };
 

@@ -21,7 +21,6 @@ export class PrismaTodoRepository implements TodoRepository {
     const limit = options?.pagination?.limit;
 
     const whereOptions = { deletedAt: null, userId, ...options?.filter };
-
     const todos = await this.prisma.todo.findMany({
       where: {
         ...whereOptions,
@@ -77,6 +76,7 @@ export class PrismaTodoRepository implements TodoRepository {
       title: todo.title,
       completed: todo.completed,
       description: todo.description,
+      createdAt: todo.createdAt,
     };
   }
 }

@@ -3,7 +3,14 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@todo/core/entities/user.entities";
 import { AxiosError } from "axios";
-import { Edit2, Mail, Shield, Trash2, Users as UsersIcon } from "lucide-react";
+import {
+  Calendar,
+  Edit2,
+  Mail,
+  Shield,
+  Trash2,
+  Users as UsersIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useUserDeleteMutations } from "../../api/userMutationApi";
 import { EditUserModal } from "../EditUserModal";
@@ -16,7 +23,7 @@ const SingleUser: React.FC<SingleUserProps> = (props) => {
 
   const { mutateAsync: deleteUser, isError, error } = useUserDeleteMutations();
 
-  const { email, id, name, role } = props;
+  const { email, id, name, role, createdAt } = props;
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case "SUPER_ADMIN":
@@ -42,6 +49,14 @@ const SingleUser: React.FC<SingleUserProps> = (props) => {
     }
   }, [isError, error, toast]);
 
+  const formatDate = (dateString: Date) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
   return (
     <div
       key={id}
@@ -64,6 +79,10 @@ const SingleUser: React.FC<SingleUserProps> = (props) => {
             <div className="flex items-center">
               <Mail className="w-3 h-3 mr-1" />
               {email}
+            </div>
+            <div className="flex items-center">
+              <Calendar className="w-3 h-3 mr-1" />
+              Joined {formatDate(createdAt)}
             </div>
           </div>
         </div>
