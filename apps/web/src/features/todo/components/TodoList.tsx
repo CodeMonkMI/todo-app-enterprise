@@ -64,7 +64,13 @@ export function TodoList() {
           </h3>
           <div className="space-y-3">
             {pendingTodos.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} />
+              <TodoItem
+                key={todo.id}
+                id={todo.id}
+                completed={todo.completed}
+                description={todo.description}
+                title={todo.title}
+              />
             ))}
           </div>
         </div>
@@ -77,7 +83,13 @@ export function TodoList() {
           </h3>
           <div className="space-y-3">
             {completedTodos.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} />
+              <TodoItem
+                key={todo.id}
+                id={todo.id}
+                completed={todo.completed}
+                description={todo.description}
+                title={todo.title}
+              />
             ))}
           </div>
         </div>

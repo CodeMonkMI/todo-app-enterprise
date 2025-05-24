@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useState } from "react";
+import { CreateTodoModal } from "./CreateTodoModal";
 
 type HeaderProps = {
   name: string;
-  setIsCreateModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
-  const { name, setIsCreateModalOpen } = props;
+  const [isOpen, setIsOpen] = useState(false);
+  const { name } = props;
   return (
     <>
       <div className="flex items-center justify-between">
@@ -20,14 +22,12 @@ const Header: React.FC<HeaderProps> = (props) => {
           </p>
         </div>
 
-        <Button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="shadow-sm"
-        >
+        <Button onClick={() => setIsOpen(true)} className="shadow-sm">
           <Plus className="w-4 h-4 mr-2" />
           New Todo
         </Button>
       </div>
+      <CreateTodoModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 };

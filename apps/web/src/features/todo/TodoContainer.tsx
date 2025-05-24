@@ -9,14 +9,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { User } from "@todo/core/entities/user.entities";
 import { useEffect, useState } from "react";
 import { useUserQuery } from "../users/api/userFetchApi";
-import { CreateTodoModal } from "./components/CreateTodoModal";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
 import { TodoList } from "./components/TodoList";
 
 export function TodoContainer() {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
   const [user, setUser] = useState<User | null>(null);
   const { id } = useAuth();
   const { data: userData, isSuccess } = useUserQuery(id);
@@ -30,7 +27,7 @@ export function TodoContainer() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Header name={user?.name} setIsCreateModalOpen={setIsCreateModalOpen} />
+      <Header name={user?.name} />
 
       <StatsCards />
 
@@ -46,11 +43,6 @@ export function TodoContainer() {
           <TodoList />
         </CardContent>
       </Card>
-
-      <CreateTodoModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-      />
     </div>
   );
 }

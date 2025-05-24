@@ -1,78 +1,79 @@
+import { useState } from "react";
 
-import React, { useState } from 'react';
-import { useTodos } from '@/contexts/TodoContext';
-import { Todo } from '@/types/todo';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-import { Edit2, Trash2, Calendar } from 'lucide-react';
-import { EditTodoModal } from './EditTodoModal';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Todo } from "@todo/core/entities/todo.entities";
+import { Calendar, Edit2, Trash2 } from "lucide-react";
+import {
+  useUserDeleteMutations,
+  useUserUpdateMutations,
+} from "../api/todoMutationApi";
+import { EditTodoModal } from "./EditTodoModal";
 
-interface TodoItemProps {
-  todo: Todo;
-}
+type TodoItemProps = Todo;
 
-export function TodoItem({ todo }: TodoItemProps) {
-  const { updateTodo, deleteTodo } = useTodos();
+export function TodoItem(props: TodoItemProps) {
+  const { completed, description, id, title } = props;
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const { mutateAsync: updateTodo } = useUserUpdateMutations();
+  const { mutateAsync: deleteTodo } = useUserDeleteMutations();
+
   const handleToggleComplete = async () => {
-    await updateTodo(todo.id, { completed: !todo.completed });
+    await updateTodo({ id, data: { completed: !completed } });
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this todo?')) {
-      await deleteTodo(todo.id);
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
+    await deleteTodo(id);
   };
 
   return (
     <>
-      <Card className={`transition-all hover:shadow-md ${todo.completed ? 'bg-gray-50' : 'bg-white'}`}>
+      <Card
+        className={`transition-all hover:shadow-md ${completed ? "bg-gray-50" : "bg-white"}`}
+      >
         <CardContent className="p-4">
           <div className="flex items-start space-x-4">
             <Checkbox
-              checked={todo.completed}
+              checked={completed}
               onCheckedChange={handleToggleComplete}
               className="mt-1"
             />
-            
+
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h4 className={`font-medium ${todo.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
-                    {todo.title}
+                  <h4
+                    className={`font-medium ${completed ? "line-through text-gray-500" : "text-gray-900"}`}
+                  >
+                    {title}
                   </h4>
-                  
-                  {todo.description && (
-                    <p className={`mt-1 text-sm ${todo.completed ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {todo.description}
+
+                  {description && (
+                    <p
+                      className={`mt-1 text-sm ${completed ? "text-gray-400" : "text-gray-600"}`}
+                    >
+                      {description}
                     </p>
                   )}
-                  
+
                   <div className="flex items-center space-x-4 mt-3">
                     <div className="flex items-center text-xs text-gray-500">
                       <Calendar className="w-3 h-3 mr-1" />
-                      Created {formatDate(todo.createdAt)}
+                      {/* Created {formatDate( createdAt)} */}
                     </div>
-                    
-                    {todo.completed && (
+
+                    {completed && (
                       <Badge variant="secondary" className="text-xs">
                         Completed
                       </Badge>
                     )}
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2 ml-4">
                   <Button
                     variant="ghost"
@@ -82,7 +83,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                   >
                     <Edit2 className="w-4 h-4" />
                   </Button>
-                  
+
                   <Button
                     variant="ghost"
                     size="sm"
@@ -99,7 +100,7 @@ export function TodoItem({ todo }: TodoItemProps) {
       </Card>
 
       <EditTodoModal
-        todo={todo}
+        todo={props as any}
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
       />

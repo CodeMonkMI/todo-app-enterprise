@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { useTodos } from '@/contexts/TodoContext';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +7,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useTodos } from "@/contexts/TodoContext";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateTodoDTO } from "@todo/core/repositories/todo.repository";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useUserCreateMutations } from "../api/todoMutationApi";
+import { CreateTodoSchema } from "../schemas";
 
 interface CreateTodoModalProps {
   isOpen: boolean;
@@ -20,32 +26,49 @@ interface CreateTodoModalProps {
 }
 
 export function CreateTodoModal({ isOpen, onClose }: CreateTodoModalProps) {
-  const { createTodo, isLoading } = useTodos();
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const { isLoading } = useTodos();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!title.trim()) return;
+  const {
+    mutateAsync: createTodo,
+    isSuccess,
+    isError,
+    error,
+  } = useUserCreateMutations();
 
-    try {
-      await createTodo({
-        title: title.trim(),
-        description: description.trim() || undefined,
-      });
-      
-      setTitle('');
-      setDescription('');
-      onClose();
-    } catch (error) {
-      console.error('Failed to create todo:', error);
-    }
+  const {
+    register,
+    reset,
+    formState: { errors },
+    setError,
+    handleSubmit,
+  } = useForm<CreateTodoDTO>({ resolver: zodResolver(CreateTodoSchema) });
+
+  const onSubmit = async (values: CreateTodoDTO) => {
+    await createTodo(values);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+      reset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      if (error instanceof AxiosError) {
+        const errs: any[] = error.response?.data;
+        errs?.forEach((item) => {
+          item?.path?.forEach((field: any) => {
+            setError(field, { message: item.message });
+          });
+        });
+      }
+    }
+  }, [error, isError, setError]);
+
   const handleClose = () => {
-    setTitle('');
-    setDescription('');
     onClose();
   };
 
@@ -55,41 +78,53 @@ export function CreateTodoModal({ isOpen, onClose }: CreateTodoModalProps) {
         <DialogHeader>
           <DialogTitle>Create New Todo</DialogTitle>
           <DialogDescription>
-            Add a new task to your todo list. Give it a clear title and optional description.
+            Add a new task to your todo list. Give it a clear title and optional
+            description.
           </DialogDescription>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit}>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="title">Title *</Label>
               <Input
                 id="title"
                 placeholder="Enter todo title..."
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
+                {...register("title")}
               />
+              {errors.title && (
+                <Alert className="border-0 ml-0 p-0">
+                  <AlertDescription className="text-red-800">
+                    {errors.title.message}
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 placeholder="Optional description..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
                 rows={3}
+                {...register("description")}
               />
+              {errors.description && (
+                <Alert className="border-0 ml-0 p-0">
+                  <AlertDescription className="text-red-800">
+                    {errors.description.message}
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
           </div>
-          
+
           <DialogFooter className="flex space-x-2">
             <Button variant="outline" onClick={handleClose} type="button">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading || !title.trim()}>
-              {isLoading ? 'Creating...' : 'Create Todo'}
+            <Button type="submit">
+              {isLoading ? "Creating..." : "Create Todo"}
             </Button>
           </DialogFooter>
         </form>
