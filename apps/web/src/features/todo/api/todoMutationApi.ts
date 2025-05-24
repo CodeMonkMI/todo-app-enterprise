@@ -7,7 +7,7 @@ import {
   TodoID,
   UpdateTodoDTO,
 } from "@todo/core/repositories/todo.repository";
-import { fetchTodosPath } from "./userQueryApi";
+import { fetchTodosPath } from "./todoQueryApi";
 
 type Create = CreateTodoDTO;
 

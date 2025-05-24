@@ -7,13 +7,23 @@ import {
 import { Todo } from "@todo/core/entities/todo.entities";
 import { CheckSquare } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useTodosQuery } from "../api/userQueryApi";
+import { useSearchParams } from "react-router-dom";
+import { useTodosQuery } from "../api/todoQueryApi";
 import { TodoItem } from "./TodoItem";
 
 export function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  const { data: usersData, isSuccess, isPending } = useTodosQuery();
+  const [searchParam] = useSearchParams();
+
+  const page = Number(searchParam.get("page")) || 1;
+  const limit = Number(searchParam.get("limit")) || 10;
+
+  const {
+    data: usersData,
+    isSuccess,
+    isPending,
+  } = useTodosQuery({ limit, page });
 
   useEffect(() => {
     if (isSuccess) {

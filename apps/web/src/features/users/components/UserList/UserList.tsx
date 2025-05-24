@@ -8,6 +8,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { User } from "@todo/core/entities/user.entities";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useUsersQuery } from "../../api/userQueryApi";
 import SingleUser from "./SingleUser";
 
@@ -16,7 +17,12 @@ export const UserList = () => {
 
   const [users, setUsers] = useState<User[]>([]);
 
-  const { data: usersData, isSuccess } = useUsersQuery();
+  const [searchParam] = useSearchParams();
+
+  const page = Number(searchParam.get("page")) || 1;
+  const limit = Number(searchParam.get("limit")) || 10;
+
+  const { data: usersData, isSuccess } = useUsersQuery({ limit, page });
 
   useEffect(() => {
     if (isSuccess) {
