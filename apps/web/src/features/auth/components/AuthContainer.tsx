@@ -1,9 +1,8 @@
+import { useState } from "react";
+import { LoginForm } from "./LoginForm";
+import { RegisterForm } from "./RegisterForm";
 
-import React, { useState } from 'react';
-import { LoginForm } from './LoginForm';
-import { RegisterForm } from './RegisterForm';
-
-export function AuthPage() {
+export function AuthContainer() {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
