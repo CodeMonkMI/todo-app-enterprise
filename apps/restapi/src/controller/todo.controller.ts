@@ -12,12 +12,16 @@ import { Request, Response } from "express";
 
 export const getAllTodos = async (req: Request, res: Response) => {
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const limit = Number(req.query.limit) || undefined;
 
-  const pagination = {
+  const pagination: {
+    limit: number | null | undefined;
+    page: number;
+    totalPages: number;
+  } = {
     limit,
     page,
-    total: 0,
+    totalPages: 1,
   };
 
   const viewAllTodosUseCase = new ViewAllTodosUseCase(getTodoRepository());
@@ -27,7 +31,11 @@ export const getAllTodos = async (req: Request, res: Response) => {
       pagination,
     }
   );
-  pagination.total = total;
+  if (limit) {
+    pagination.totalPages = total;
+  } else {
+    pagination.limit = null;
+  }
   res.status(200).json({ pagination, data: todos });
 };
 
