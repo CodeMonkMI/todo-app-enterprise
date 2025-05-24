@@ -10,25 +10,35 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/contexts/AuthContext";
-import React, { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useLogin } from "../api/loginApi";
+import { LoginFormInputs, LoginUserSchema } from "../schema";
 
 export function LoginForm() {
-  const { login, isLoading } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const {
+    mutateAsync: login,
+    isSuccess,
+    isPending,
+    isError,
+    error,
+  } = useLogin();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  const {
+    register,
+    formState: { errors },
+    reset,
+    handleSubmit,
+    setError,
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(LoginUserSchema),
+  });
 
-    try {
-      await login({ email, password });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
-    }
+  const onSubmit = async (values: LoginFormInputs) => {
+    await login(values);
   };
 
   const navigate = useNavigate();
@@ -36,6 +46,25 @@ export function LoginForm() {
   const onSwitchToRegister = () => {
     navigate("/register");
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/dashboard");
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      if (error instanceof AxiosError) {
+        const errs: any[] = error.response?.data;
+        errs?.forEach((item) => {
+          item?.path?.forEach((field: any) => {
+            setError(field, { message: item.message });
+          });
+        });
+      }
+    }
+  }, [error, isError, setError]);
 
   return (
     <Card className="w-full max-w-md">
@@ -45,26 +74,23 @@ export function LoginForm() {
           Enter your credentials to access your account
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent className="space-y-4">
-          {error && (
-            <Alert className="border-red-200 bg-red-50">
-              <AlertDescription className="text-red-800">
-                {error}
-              </AlertDescription>
-            </Alert>
-          )}
-
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              {...register("email")}
             />
+            {errors.email && (
+              <Alert className="border-0 ml-0 p-0">
+                <AlertDescription className="text-red-800">
+                  {errors.email.message}
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -73,16 +99,21 @@ export function LoginForm() {
               id="password"
               type="password"
               placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              {...register("password")}
             />
+            {errors.password && (
+              <Alert className="border-0 ml-0 p-0">
+                <AlertDescription className="text-red-800">
+                  {errors.password.message}
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Signing In..." : "Sign In"}
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "Signing In..." : "Sign In"}
           </Button>
 
           <div className="text-sm text-center">

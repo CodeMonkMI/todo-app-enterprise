@@ -10,7 +10,6 @@ import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
-import RegisterPage from "./pages/Register";
 import Settings from "./pages/Settings";
 import Users from "./pages/Users";
 
@@ -45,16 +44,7 @@ function AppRoutes() {
           isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
         }
       />
-      <Route
-        path="/register"
-        element={
-          isAuthenticated ? (
-            <Navigate to="/dashboard" replace />
-          ) : (
-            <RegisterPage />
-          )
-        }
-      />
+
       <Route
         path="/dashboard"
         element={
