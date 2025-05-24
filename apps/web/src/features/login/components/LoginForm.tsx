@@ -1,31 +1,40 @@
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/AuthContext";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-
-interface LoginFormProps {
-  onSwitchToRegister: () => void;
-}
-
-export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
+export function LoginForm() {
   const { login, isLoading } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
       await login({ email, password });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      setError(err instanceof Error ? err.message : "Login failed");
     }
+  };
+
+  const navigate = useNavigate();
+
+  const onSwitchToRegister = () => {
+    navigate("/register");
   };
 
   return (
@@ -40,10 +49,12 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
         <CardContent className="space-y-4">
           {error && (
             <Alert className="border-red-200 bg-red-50">
-              <AlertDescription className="text-red-800">{error}</AlertDescription>
+              <AlertDescription className="text-red-800">
+                {error}
+              </AlertDescription>
             </Alert>
           )}
-          
+
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -55,7 +66,7 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
@@ -67,23 +78,15 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
               required
             />
           </div>
-
-          <div className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
-            <p className="font-semibold mb-2">Demo Accounts:</p>
-            <p>• superadmin@todo.com (Super Admin)</p>
-            <p>• admin@todo.com (Admin)</p>
-            <p>• user@todo.com (User)</p>
-            <p className="mt-2 text-xs">Any password works for demo</p>
-          </div>
         </CardContent>
-        
+
         <CardFooter className="flex flex-col space-y-4">
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
+            {isLoading ? "Signing In..." : "Sign In"}
           </Button>
-          
+
           <div className="text-sm text-center">
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <button
               type="button"
               onClick={onSwitchToRegister}

@@ -1,4 +1,3 @@
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -69,7 +68,7 @@ export function SettingsContainer() {
   const isSuperAdmin = user?.role === "SUPER_ADMIN";
 
   return (
-    <DashboardLayout>
+    <>
       <div className="space-y-6">
         {/* Header */}
         <div>
@@ -582,6 +581,6 @@ export function SettingsContainer() {
           )}
         </Tabs>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

@@ -6,10 +6,11 @@ import { TodoProvider } from "@/contexts/TodoContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AuthPage from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import LoginPage from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
+import RegisterPage from "./pages/Register";
 import Settings from "./pages/Settings";
 import Users from "./pages/Users";
 
@@ -39,9 +40,19 @@ function AppRoutes() {
   return (
     <Routes>
       <Route
-        path="/auth"
+        path="/login"
         element={
-          isAuthenticated ? <Navigate to="/dashboard" replace /> : <AuthPage />
+          isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          isAuthenticated ? (
+            <Navigate to="/dashboard" replace />
+          ) : (
+            <RegisterPage />
+          )
         }
       />
       <Route
