@@ -7,7 +7,7 @@ import {
   TodoID,
   UpdateTodoDTO,
 } from "@todo/core/repositories/todo.repository";
-import { fetchTodosPath } from "./userFetchApi";
+import { fetchTodosPath } from "./userQueryApi";
 
 type Create = CreateTodoDTO;
 
@@ -17,7 +17,7 @@ const createTodo = async (
   return axios.post("/todos", data);
 };
 
-export const useUserCreateMutations = () => {
+export const useTodoCreateMutations = () => {
   const queryClient = useQueryClient();
   return useMutation<{ data: Todo } | undefined, Error, Create>({
     mutationFn: createTodo,
@@ -37,7 +37,7 @@ const updateTodo = async (
   return axios.put(`/todos/${values.id}`, values.data);
 };
 
-export const useUserUpdateMutations = () => {
+export const useTodoUpdateMutations = () => {
   const queryClient = useQueryClient();
 
   return useMutation<{ data: Todo } | undefined, Error, UpdateTodoParam>({
@@ -52,7 +52,7 @@ const deleteTodo = async (id: TodoID): Promise<{ data: void } | undefined> => {
   return axios.delete(`/todos/${id}`);
 };
 
-export const useUserDeleteMutations = () => {
+export const useTodoDeleteMutations = () => {
   const queryClient = useQueryClient();
 
   return useMutation<{ data: void } | undefined, Error, TodoID>({

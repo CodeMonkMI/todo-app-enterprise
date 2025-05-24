@@ -7,8 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Todo } from "@todo/core/entities/todo.entities";
 import { Calendar, Edit2, Trash2 } from "lucide-react";
 import {
-  useUserDeleteMutations,
-  useUserUpdateMutations,
+  useTodoDeleteMutations,
+  useTodoUpdateMutations,
 } from "../api/todoMutationApi";
 import { EditTodoModal } from "./EditTodoModal";
 
@@ -19,8 +19,8 @@ export function TodoItem(props: TodoItemProps) {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { mutateAsync: updateTodo } = useUserUpdateMutations();
-  const { mutateAsync: deleteTodo } = useUserDeleteMutations();
+  const { mutateAsync: updateTodo } = useTodoUpdateMutations();
+  const { mutateAsync: deleteTodo } = useTodoDeleteMutations();
 
   const handleToggleComplete = async () => {
     await updateTodo({ id, data: { completed: !completed } });

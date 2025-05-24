@@ -17,7 +17,7 @@ import { CreateTodoDTO } from "@todo/core/repositories/todo.repository";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useUserCreateMutations } from "../api/todoMutationApi";
+import { useTodoCreateMutations } from "../api/todoMutationApi";
 import { CreateTodoSchema } from "../schemas";
 
 interface CreateTodoModalProps {
@@ -33,7 +33,7 @@ export function CreateTodoModal({ isOpen, onClose }: CreateTodoModalProps) {
     isSuccess,
     isError,
     error,
-  } = useUserCreateMutations();
+  } = useTodoCreateMutations();
 
   const {
     register,

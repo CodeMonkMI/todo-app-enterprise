@@ -18,7 +18,7 @@ import { Todo } from "@todo/core/entities/todo.entities";
 import { UpdateTodoDTO } from "@todo/core/repositories/todo.repository";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import { useUserUpdateMutations } from "../api/todoMutationApi";
+import { useTodoUpdateMutations } from "../api/todoMutationApi";
 import { UpdateTodoSchema } from "../schemas";
 
 interface EditTodoModalProps {
@@ -34,7 +34,7 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
     isError,
     error,
     isPending: isLoading,
-  } = useUserUpdateMutations();
+  } = useTodoUpdateMutations();
 
   const {
     register,

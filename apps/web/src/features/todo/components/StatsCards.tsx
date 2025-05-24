@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Todo } from "@todo/core/entities/todo.entities";
 import { CheckCircle, CheckSquare, Clock } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
-import { useTodosQuery } from "../api/userFetchApi";
+import { useTodosQuery } from "../api/userQueryApi";
 const StatsCards = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 

@@ -7,7 +7,7 @@ import {
 import { Todo } from "@todo/core/entities/todo.entities";
 import { CheckSquare } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useTodosQuery } from "../api/userFetchApi";
+import { useTodosQuery } from "../api/userQueryApi";
 import { TodoItem } from "./TodoItem";
 
 export function TodoList() {
