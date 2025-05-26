@@ -11,12 +11,23 @@ type Pagination = {
   limit: number;
 };
 
+export type TodosDataResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    totalPages: number;
+  };
+  data: Todo[];
+};
+
 type Options = {
   pagination?: Pagination;
   filter?: { completed?: boolean };
 };
 
-const fetchTodos = async (options?: Options): Promise<Todo[] | undefined> => {
+const fetchTodos = async (
+  options?: Options
+): Promise<TodosDataResponse | undefined> => {
   let query = "";
   if (options!) {
     const { pagination = null, filter = null } = options;

@@ -12,9 +12,18 @@ type Pagination = {
   limit: number;
 };
 
+export type UserDataResponse = {
+  pagination: {
+    limit: number;
+    page: number;
+    totalPages: number;
+  };
+  data: User[];
+};
+
 const fetchUsers = async (
   pagination?: Pagination
-): Promise<User[] | undefined> => {
+): Promise<UserDataResponse | undefined> => {
   const query = pagination
     ? Object.entries(pagination)
         .map(([key, value]) => `${key}=${value}`)

@@ -1,3 +1,4 @@
+import CustomPagination from "@/components/CustomPagination/CustomPagination";
 import {
   Card,
   CardContent,
@@ -13,11 +14,19 @@ import { TodoItem } from "./TodoItem";
 
 export function CompletedTodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
-  const [searchParam] = useSearchParams();
+  const [searchParam, setSearchParam] = useSearchParams();
 
   const page = Number(searchParam.get("page")) || 1;
   const limit = Number(searchParam.get("limit")) || 10;
+
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams(searchParam.toString());
+    newSearchParams.set("limit", "5");
+    setSearchParam(newSearchParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const {
     data: todoData,
@@ -32,7 +41,8 @@ export function CompletedTodoList() {
 
   useEffect(() => {
     if (isSuccess) {
-      setTodos((todoData as any).data);
+      setTotalPages(todoData.pagination.totalPages);
+      setTodos(todoData.data);
     }
   }, [isSuccess, todoData]);
 
@@ -88,6 +98,7 @@ export function CompletedTodoList() {
           </div>
         </div>
       )}
+      <CustomPagination totalPages={totalPages} />
     </div>
   );
 }

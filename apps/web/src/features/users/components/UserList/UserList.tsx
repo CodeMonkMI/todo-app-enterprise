@@ -10,12 +10,15 @@ import { User } from "@todo/core/entities/user.entities";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useUsersQuery } from "../../api/userQueryApi";
+
+import CustomPagination from "@/components/CustomPagination/CustomPagination";
 import SingleUser from "./SingleUser";
 
 export const UserList = () => {
   const { role } = useAuth();
 
   const [users, setUsers] = useState<User[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const [searchParam] = useSearchParams();
 
@@ -26,7 +29,8 @@ export const UserList = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setUsers((usersData as any).data);
+      setTotalPages(usersData.pagination.totalPages);
+      setUsers(usersData.data);
     }
   }, [isSuccess, usersData]);
 
@@ -53,6 +57,7 @@ export const UserList = () => {
               />
             ))}
           </div>
+          <CustomPagination totalPages={totalPages} />
         </CardContent>
       </Card>
     </div>
