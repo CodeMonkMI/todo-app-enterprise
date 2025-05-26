@@ -5,7 +5,7 @@ export type TokenData = {
   role: string;
 };
 
-interface AuthState {
+export interface AuthState {
   id: string | null;
   role: string | null;
   isAuthenticated: boolean;

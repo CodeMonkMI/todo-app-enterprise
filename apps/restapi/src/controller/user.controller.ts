@@ -1,3 +1,5 @@
+import { User } from "@todo/core/entities/user.entities";
+import { UserRoleEnum } from "@todo/core/repositories/user.repository";
 import { CreateNewUserUseCase } from "@todo/core/use-cases/create-new-user";
 import { DeleteUserUseCase } from "@todo/core/use-cases/delete-user";
 import { UpdateUserUseCase } from "@todo/core/use-cases/udpate-user";
@@ -46,7 +48,10 @@ export const createUser = async (req: Request, res: Response) => {
   }
   const data = parsedData.data;
 
-  console.log(data);
+  if ((req.user as User).role !== "SUPER_ADMIN") {
+    data.role = UserRoleEnum.USER;
+  }
+
   const createUserUseCase = new CreateNewUserUseCase(
     getUserRepository(),
     hashPassword

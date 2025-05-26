@@ -8,11 +8,19 @@
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js"
+    },
+    "./esm/*": {
+      "types": "./dist/esm/*.d.ts",
+      "require": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js"
     }
   },
   "scripts": {
     "dev": "tsc -watch",
-    "build": "tsc",
+    "build": "pnpm run build:esm && pnpm run build:cjs && pnpm run build:types",
+    "build:esm": "tsc --module ESNext --moduleResolution bundler --outDir dist/esm",
+    "build:cjs": "tsc",
+    "build:types": "tsc --emitDeclarationOnly --declarationDir dist/esm",
     "test": "jest",
     "clear": "rimraf dist",
     "check-types": "tsc --noEmit"

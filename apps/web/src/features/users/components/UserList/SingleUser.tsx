@@ -1,3 +1,4 @@
+import { HasRole } from "@/components/AuthGuard/AuthGuard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -88,34 +89,36 @@ const SingleUser: React.FC<SingleUserProps> = (props) => {
         </div>
       </div>
 
-      <div className="flex items-center space-x-3">
-        <div className="flex space-x-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsOpen(true)}
-            className="text-gray-500 hover:text-blue-600"
-          >
-            <Edit2 className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              deleteUser(id);
-            }}
-            className="text-gray-500 hover:text-red-600"
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
+      <HasRole requiredRole="super_admin">
+        <div className="flex items-center space-x-3">
+          <div className="flex space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(true)}
+              className="text-gray-500 hover:text-blue-600"
+            >
+              <Edit2 className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                deleteUser(id);
+              }}
+              className="text-gray-500 hover:text-red-600"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
-      </div>
-      <EditUserModal
-        role={props.role as any}
-        id={props.id}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-      />
+        <EditUserModal
+          role={props.role as any}
+          id={props.id}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+        />
+      </HasRole>
     </div>
   );
 };

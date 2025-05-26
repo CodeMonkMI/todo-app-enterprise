@@ -195,6 +195,9 @@ importers:
       '@todo/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@todo/pm':
+        specifier: workspace:*
+        version: link:../../packages/permission-manger
       '@todo/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas

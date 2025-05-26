@@ -25,19 +25,20 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { HasRole } from "../AuthGuard/AuthGuard";
 
 const menuItems = [
   {
     title: "My Todos",
     url: "/dashboard",
     icon: CheckSquare,
-    roles: ["USER", "ADMIN", "SUPER_ADMIN"],
+    roles: "user",
   },
   {
     title: "User Management",
     url: "/users",
     icon: Users,
-    roles: ["ADMIN", "SUPER_ADMIN"],
+    roles: "admin",
   },
 ];
 
@@ -93,17 +94,22 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={location.pathname === item.url}
-                  >
-                    <a href={item.url} className="flex items-center space-x-3">
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <HasRole requiredRole={item.roles} fallback={null}>
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={location.pathname === item.url}
+                    >
+                      <a
+                        href={item.url}
+                        className="flex items-center space-x-3"
+                      >
+                        <item.icon className="w-5 h-5" />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </HasRole>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

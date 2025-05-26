@@ -1,3 +1,4 @@
+import { HasRoleAndPermission } from "@/components/AuthGuard/AuthGuard";
 import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
 import { useState } from "react";
@@ -15,12 +16,23 @@ const Header = () => {
           </p>
         </div>
 
-        <Button className="shadow-sm" onClick={() => setIsOpen(true)}>
-          <UserPlus className="w-4 h-4 mr-2" />
-          Add User
-        </Button>
+        <HasRoleAndPermission
+          requiredRole="admin"
+          requiredPermissions={["user:create"]}
+        >
+          <Button className="shadow-sm" onClick={() => setIsOpen(true)}>
+            <UserPlus className="w-4 h-4 mr-2" />
+            Add User
+          </Button>
+        </HasRoleAndPermission>
       </div>
-      <CreateUserModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+
+      <HasRoleAndPermission
+        requiredRole="admin"
+        requiredPermissions={["user:create"]}
+      >
+        <CreateUserModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      </HasRoleAndPermission>
     </div>
   );
 };

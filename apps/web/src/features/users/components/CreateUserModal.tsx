@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { HasRole } from "@/components/AuthGuard/AuthGuard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -143,6 +144,7 @@ export function CreateUserModal({ isOpen, onClose }: CreateUserModalProps) {
                 </Alert>
               )}
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="role">Role *</Label>
               <Select
@@ -157,8 +159,10 @@ export function CreateUserModal({ isOpen, onClose }: CreateUserModalProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="USER">User</SelectItem>
-                  <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
+                  <HasRole requiredRole="super_admin">
+                    <SelectItem value="ADMIN">Admin</SelectItem>
+                    <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
+                  </HasRole>
                 </SelectContent>
               </Select>
               {errors.role && (

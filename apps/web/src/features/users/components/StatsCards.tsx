@@ -28,16 +28,14 @@ const StatsCards = () => {
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
       <StatCard
         title="Total Users"
-        value={<div className="text-2xl font-bold">{visibleUsers.length}</div>}
+        value={<div className="text-2xl font-bold">{users.length}</div>}
         icon={<UsersIcon className="h-4 w-4 text-muted-foreground" />}
       />
       <StatCard
         title="Super Admins"
         value={
           <div className="text-2xl font-bold text-red-600">
-            {role.toUpperCase() === "SUPER_ADMIN"
-              ? visibleUsers.filter((u) => u.role === "SUPER_ADMIN").length
-              : "-"}
+            {users.filter((u) => u.role === "SUPER_ADMIN").length || 0}
           </div>
         }
         icon={<Shield className="h-4 w-4 text-red-500" />}
@@ -47,9 +45,7 @@ const StatsCards = () => {
         title="Admins"
         value={
           <div className="text-2xl font-bold text-blue-600">
-            {role.toUpperCase() === "SUPER_ADMIN"
-              ? visibleUsers.filter((u) => u.role === "ADMIN").length
-              : "0"}
+            {users.filter((u) => u.role === "ADMIN").length || 0}
           </div>
         }
         icon={<UsersIcon className="h-4 w-4 text-green-500" />}
