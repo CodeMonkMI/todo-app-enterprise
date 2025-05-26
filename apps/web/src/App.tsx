@@ -7,8 +7,7 @@ import { authToken } from "./lib/token/AuthToken";
 import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
+import RegisterPage from "./pages/Register";
 import Users from "./pages/Users";
 
 const App = () => {
@@ -25,6 +24,7 @@ const App = () => {
       }
     }
     setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {
@@ -39,13 +39,12 @@ const App = () => {
     <Routes>
       <Route element={<AuthRoute />}>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

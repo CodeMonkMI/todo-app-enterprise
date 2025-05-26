@@ -19,7 +19,6 @@ import { User } from "@todo/core/entities/user.entities";
 import {
   CheckSquare,
   LogOut,
-  Settings,
   Shield,
   User as UserIcon,
   Users,
@@ -39,18 +38,6 @@ const menuItems = [
     url: "/users",
     icon: Users,
     roles: ["ADMIN", "SUPER_ADMIN"],
-  },
-  {
-    title: "Profile",
-    url: "/profile",
-    icon: UserIcon,
-    roles: ["USER", "ADMIN", "SUPER_ADMIN"],
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-    roles: ["USER", "ADMIN", "SUPER_ADMIN"],
   },
 ];
 

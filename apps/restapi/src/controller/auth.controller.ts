@@ -1,8 +1,9 @@
+import { CreateNewUserUseCase } from "@todo/core/use-cases/create-new-user";
 import { UserLoginUseCase } from "@todo/core/use-cases/user-login";
 import { getUserRepository } from "@todo/database";
 import { ImplValidationError } from "@todo/errors/custom-error/validation-error";
 import { ZodError } from "@todo/errors/interface/ValidationError";
-import { LoginUserSchema } from "@todo/schemas";
+import { LoginUserSchema, RegisterUserSchema } from "@todo/schemas";
 import { BcryptJsHashPassword, ImplJsonWebToken } from "@todo/shared";
 import { Request, Response } from "express";
 const hashPassword = new BcryptJsHashPassword();
@@ -23,5 +24,23 @@ export const login = async (req: Request, res: Response) => {
   const token = await createTodoUseCase.execute(data.email, data.password);
 
   res.status(202).json({ token });
+  return;
+};
+
+export const register = async (req: Request, res: Response) => {
+  const parsedData = RegisterUserSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const errors = parsedData.error.errors as ZodError[];
+    throw new ImplValidationError(400, "Registration failed!", errors);
+  }
+  const data = parsedData.data;
+
+  const createTodoUseCase = new CreateNewUserUseCase(
+    getUserRepository(),
+    hashPassword
+  );
+  await createTodoUseCase.execute(data);
+
+  res.status(202).json({ message: "User created successfully" });
   return;
 };
