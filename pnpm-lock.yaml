@@ -32,9 +32,6 @@ importers:
       '@todo/pm':
         specifier: workspace:*
         version: link:../../packages/permission-manger
-      '@todo/schemas':
-        specifier: workspace:*
-        version: link:../../packages/schemas
       '@todo/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -198,9 +195,6 @@ importers:
       '@todo/pm':
         specifier: workspace:*
         version: link:../../packages/permission-manger
-      '@todo/schemas':
-        specifier: workspace:*
-        version: link:../../packages/schemas
       axios:
         specifier: ^1.9.0
         version: 1.9.0
@@ -432,25 +426,6 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
 
-  packages/schemas:
-    dependencies:
-      zod:
-        specifier: ^3.25.23
-        version: 3.25.23
-    devDependencies:
-      '@todo/core':
-        specifier: workspace:*
-        version: link:../core
-      '@todo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@todo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      rimraf:
-        specifier: ^6.0.1
-        version: 6.0.1
-
   packages/shared:
     dependencies:
       '@todo/core':
@@ -471,18 +446,6 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
-      rimraf:
-        specifier: ^6.0.1
-        version: 6.0.1
-
-  packages/types:
-    dependencies:
-      '@todo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@todo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1

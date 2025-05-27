@@ -28,6 +28,10 @@
     "./json-web-token/*": {
       "types": "./dist/json-web-token/*.d.ts",
       "require": "./dist/json-web-token/*.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas/index.d.ts",
+      "require": "./dist/json-web-token/index.js"
     }
   },
   "scripts": {

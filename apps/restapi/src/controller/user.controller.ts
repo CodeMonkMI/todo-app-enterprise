@@ -8,8 +8,9 @@ import { ViewUserUseCase } from "@todo/core/use-cases/view-user";
 import { getUserRepository } from "@todo/database";
 import { ImplValidationError } from "@todo/errors/custom-error/validation-error";
 import { ZodError } from "@todo/errors/interface/ValidationError";
-import { CreateUserSchema, UpdateUserSchema } from "@todo/schemas";
 import { BcryptJsHashPassword } from "@todo/shared";
+
+import { CreateUserSchema, UpdateUserSchema } from "@todo/shared/schemas";
 import { Request, Response } from "express";
 
 const hashPassword = new BcryptJsHashPassword();
