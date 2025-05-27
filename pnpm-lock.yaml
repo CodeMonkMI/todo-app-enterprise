@@ -475,6 +475,18 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
 
+  packages/types:
+    dependencies:
+      '@todo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@todo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+
   packages/typescript-config: {}
 
 packages:
