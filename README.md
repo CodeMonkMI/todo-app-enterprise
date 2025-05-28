@@ -2,6 +2,8 @@
 
 A full-stack TypeScript monorepo application built with Turborepo, featuring a clean architecture pattern and domain-driven design.
 
+
+
 ## Project Overview
 
 Todo Enterprise is a robust task management system with user authentication, role-based access control, and a modern React frontend.
@@ -14,6 +16,12 @@ Todo Enterprise is a robust task management system with user authentication, rol
 - Modern React frontend with shadcn-ui
 - Clean architecture with domain-driven design
 - Type-safe development with TypeScript
+
+
+## User Requirements
+[User Requirements](/docs/srs/Requirements.pdf)
+[Requirement Analysis](/docs/srs/SRS_Analysis.pdf)
+
 
 # Project Structure
 
