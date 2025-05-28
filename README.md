@@ -125,3 +125,28 @@ The application follows a clean architecture pattern with:
 - Infrastructure Layer (`packages/database`, `packages/shared`)
 - Presentation Layer (`apps/restapi`, `apps/web`)
 
+## About Me
+
+Hi! I'm a passionate software engineer dedicated to creating enterprise-level solutions. With a focus on clean architecture and domain-driven design, I strive to build scalable and maintainable applications that solve real-world problems.
+
+### My Expertise
+- Full-stack Development with TypeScript
+- Clean Architecture & DDD Principles
+- Enterprise Application Design
+- Modern Frontend Development (React)
+- Backend Development (Node.js/Express)
+
+## Contact Me
+
+### Get in Touch
+I'm always open to discussing technology, software architecture, or potential collaborations. Feel free to reach out through any of these channels:
+
+- 📧 Email: mr.monirul.dev@gmail.com
+- 💼 LinkedIn: [Linkedin](https://www.linkedin.com/in/codemonkmi/)
+- 🐱 GitHub: [Github](https://github.com/CodeMonkMI)
+- 🌐 Portfolio: [Portfolio](https://codemonkmi.vercel.app/)
+
+### Let's Connect
+Whether you're interested in contributing to this project, have questions about the implementation, or just want to connect, I'd love to hear from you!
+
+*Note: Please replace the placeholder contact information with your actual contact details.*
