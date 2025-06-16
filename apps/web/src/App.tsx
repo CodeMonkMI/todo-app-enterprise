@@ -16,7 +16,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const token = authToken.get();
+    const token = authToken.getItem();
     if (token) {
       const user = authToken.decode(token) as TokenData;
       if (user) {

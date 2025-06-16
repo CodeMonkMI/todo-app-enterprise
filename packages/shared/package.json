@@ -31,7 +31,7 @@
     },
     "./schemas": {
       "types": "./dist/schemas/index.d.ts",
-      "require": "./dist/json-web-token/index.js"
+      "require": "./dist/schemas/index.js"
     }
   },
   "scripts": {

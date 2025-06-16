@@ -21,6 +21,6 @@ export const useLogin = () =>
   useMutation<{ data: LoginResponse } | undefined, Error, LoginFormInputs>({
     mutationFn: login,
     onSuccess: (res: { data: LoginResponse } | undefined) => {
-      if (res?.data) authToken.set(res.data.token);
+      if (res?.data) authToken.setItem(res.data.token);
     },
   });

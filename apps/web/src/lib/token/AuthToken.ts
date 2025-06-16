@@ -4,7 +4,7 @@ import { LocalStorage } from "../localStorage";
 
 class AuthToken<T> extends LocalStorage {
   key: string = "authToken";
-  decode(token: string = this.get()): T {
+  decode(token: string = this.getItem()): T {
     return jwtDecode(token);
   }
 }

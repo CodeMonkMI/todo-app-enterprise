@@ -6,7 +6,7 @@ const baseUrl = "http://localhost:5000/";
 export class Axios {
   private static baseUrl: string = baseUrl;
   private static token: string =
-    typeof authToken?.get === "function" ? authToken.get() : "";
+    typeof authToken?.getItem === "function" ? authToken.getItem() : "";
   private static axiosInstance: AxiosInstance | null = null;
   private constructor() {}
 

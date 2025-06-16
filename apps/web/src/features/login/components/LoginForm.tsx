@@ -55,7 +55,7 @@ export function LoginForm() {
   useEffect(() => {
     if (isSuccess) {
       const token = (data as any).data.token;
-      authToken.set(token);
+      authToken.setItem(token);
       const user = authToken.decode(token) as TokenData;
       authLogin(user);
       navigate("/");

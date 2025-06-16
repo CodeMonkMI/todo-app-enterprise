@@ -59,7 +59,7 @@ export function AppSidebar() {
 
   const handleLogout = () => {
     logout();
-    authToken.remove();
+    authToken.removeItem();
     navigate("/");
   };
 
