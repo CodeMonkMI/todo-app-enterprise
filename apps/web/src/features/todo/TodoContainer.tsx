@@ -5,18 +5,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAuth } from "@/contexts/AuthContext";
 import { User } from "@todo/core/entities/user.entities";
 import { useEffect, useState } from "react";
-import { useUserQuery } from "../users/api/userQueryApi";
+import { useMeQuery } from "../users/api/userQueryApi";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
 import { TodoList } from "./components/TodoList";
 
 export function TodoContainer() {
   const [user, setUser] = useState<User | null>(null);
-  const { id } = useAuth();
-  const { data: userData, isSuccess } = useUserQuery(id);
+
+  const { data: userData, isSuccess } = useMeQuery();
 
   useEffect(() => {
     if (isSuccess && userData) {

@@ -55,3 +55,14 @@ export const useUserQuery = (id: UserID) =>
     queryKey: [fetchUsersPath, id],
     queryFn: () => fetchUser(id),
   });
+
+const authUser = async (): Promise<User | undefined> => {
+  const data: AxiosResponse = await axios.get(`/auth/me`);
+  return data.data;
+};
+
+export const useMeQuery = () =>
+  useQuery<User, Error>({
+    queryKey: [authUser],
+    queryFn: authUser,
+  });

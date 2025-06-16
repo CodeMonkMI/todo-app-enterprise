@@ -1,5 +1,6 @@
 import { CreateNewUserUseCase } from "@todo/core/use-cases/create-new-user";
 import { UserLoginUseCase } from "@todo/core/use-cases/user-login";
+import { ViewUserUseCase } from "@todo/core/use-cases/view-user";
 import { getUserRepository } from "@todo/database";
 import { ImplValidationError } from "@todo/errors/custom-error/validation-error";
 import { ZodError } from "@todo/errors/interface/ValidationError";
@@ -25,6 +26,15 @@ export const login = async (req: Request, res: Response) => {
   const token = await createTodoUseCase.execute(data.email, data.password);
 
   res.status(202).json({ token });
+  return;
+};
+export const me = async (req: Request, res: Response) => {
+  const id = (req.user as any)?.id;
+
+  const viewUserUseCase = new ViewUserUseCase(getUserRepository());
+  const user = await viewUserUseCase.execute(id);
+
+  res.status(200).json(user);
   return;
 };
 

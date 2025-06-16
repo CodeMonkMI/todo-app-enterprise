@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUserQuery } from "@/features/users/api/userQueryApi";
+import { useMeQuery } from "@/features/users/api/userQueryApi";
 import { authToken } from "@/lib/token/AuthToken";
 import { User } from "@todo/core/entities/user.entities";
 
@@ -46,7 +46,7 @@ export function AppSidebar() {
   const { logout, role, id } = useAuth();
 
   const [user, setUser] = useState<User | null>(null);
-  const { data: userData, isSuccess, isError } = useUserQuery(id);
+  const { data: userData, isSuccess, isError } = useMeQuery();
 
   useEffect(() => {
     if (isSuccess && userData) {

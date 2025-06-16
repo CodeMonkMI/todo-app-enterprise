@@ -1,7 +1,6 @@
-
-import React from 'react';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { AppSidebar } from './AppSidebar';
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import React from "react";
+import { AppSidebar } from "./AppSidebar";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -16,9 +15,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <header className="border-b bg-white p-4">
             <SidebarTrigger className="md:hidden" />
           </header>
-          <div className="flex-1 p-6">
-            {children}
-          </div>
+          <div className="flex-1 p-6">{children}</div>
         </main>
       </div>
     </SidebarProvider>
