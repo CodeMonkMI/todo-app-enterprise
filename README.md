@@ -2,8 +2,6 @@
 
 A full-stack TypeScript monorepo application built with Turborepo, featuring a clean architecture pattern and domain-driven design.
 
-
-
 ## Project Overview
 
 Todo Enterprise is a robust task management system with user authentication, role-based access control, and a modern React frontend.
@@ -17,15 +15,15 @@ Todo Enterprise is a robust task management system with user authentication, rol
 - Clean architecture with domain-driven design
 - Type-safe development with TypeScript
 
-
 ## User Requirements
+
 [User Requirements](/docs/srs/Requirements.pdf)
 [Requirement Analysis](/docs/srs/SRS_Analysis.pdf)
-
 
 # Project Structure
 
 ## Architecture
+
 The project is organized into multiple packages and apps, each with its own purpose.
 ![Project Architecture](/docs/images/architecture.png "Todo Enterprise Architecture")
 
@@ -46,7 +44,8 @@ The project is organized into multiple packages and apps, each with its own purp
 - `packages/typescript-config`: Shared TypeScript configurations
 
 ### `packages/core`
-Interfaces: 
+
+Interfaces:
 ![Core Interfaces](/docs/images/interfaces.png "Core Interfaces")
 
 Repositories:
@@ -56,13 +55,14 @@ Use Cases:
 ![Core Use Cases](/docs/images/use_cases_list.png "Core Use Cases")
 
 ### `packages/database`
-Database Design: 
+
+Database Design:
 ![Database Design](/docs/images/database_design.png "Database Design")
 
 ### `packages/permission-manger`
-Permission State: 
-![Permission State](/docs/images/permission_flow.png "Permission State")
 
+Permission State:
+![Permission State](/docs/images/permission_flow.png "Permission State")
 
 ## Getting Started
 
@@ -75,21 +75,25 @@ Permission State:
 ### Installation
 
 1. Clone the repository:
+
 ```sh
 git clone <repository-url>
 cd todo-enterprise
 ```
 
 2. Install dependencies:
+
 ```sh
 pnpm install
 ```
 
 3. Set up environment variables:
+
 - Copy `.env.example` to `.env`
 - Update the database connection string and other required variables
 
 4. Set up the database:
+
 ```sh
 pnpm -F @todo/database prisma:generate
 pnpm -F @todo/database prisma:migrate
@@ -98,11 +102,13 @@ pnpm -F @todo/database prisma:migrate
 ### Development
 
 Start all services in development mode:
+
 ```sh
 pnpm dev
 ```
 
 Other useful commands:
+
 ```sh
 # Build all packages
 pnpm build
@@ -130,6 +136,7 @@ The application follows a clean architecture pattern with:
 Hi! I'm a passionate software engineer dedicated to creating enterprise-level solutions. With a focus on clean architecture and domain-driven design, I strive to build scalable and maintainable applications that solve real-world problems.
 
 ### My Expertise
+
 - Full-stack Development with TypeScript
 - Clean Architecture & DDD Principles
 - Enterprise Application Design
@@ -139,6 +146,7 @@ Hi! I'm a passionate software engineer dedicated to creating enterprise-level so
 ## Contact Me
 
 ### Get in Touch
+
 I'm always open to discussing technology, software architecture, or potential collaborations. Feel free to reach out through any of these channels:
 
 - 📧 Email: mr.monirul.dev@gmail.com
@@ -147,6 +155,7 @@ I'm always open to discussing technology, software architecture, or potential co
 - 🌐 Portfolio: [Portfolio](https://codemonkmi.vercel.app/)
 
 ### Let's Connect
+
 Whether you're interested in contributing to this project, have questions about the implementation, or just want to connect, I'd love to hear from you!
 
-*Note: Please replace the placeholder contact information with your actual contact details.*
+_Note: Please replace the placeholder contact information with your actual contact details._

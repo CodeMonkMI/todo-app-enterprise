@@ -32,6 +32,8 @@
     "@todo/errors": "workspace:*",
     "@todo/eslint-config": "workspace:*",
     "@todo/typescript-config": "workspace:*",
+    "crypto": "^1.0.1",
+    "redis": "^5.8.2",
     "rimraf": "^6.0.1"
   },
   "devDependencies": {
