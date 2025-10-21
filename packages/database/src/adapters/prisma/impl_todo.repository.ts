@@ -9,6 +9,8 @@ import {
   UpdateTodoDTO,
 } from "@todo/core/repositories/todo.repository";
 import { UserID } from "@todo/core/repositories/user.repository";
+import crypto from "crypto";
+import { Redis } from "../../redis";
 
 export class PrismaTodoRepository implements TodoRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -19,6 +21,16 @@ export class PrismaTodoRepository implements TodoRepository {
   ): Promise<{ total: number; data: Todo[] }> {
     const page = options?.pagination?.page;
     const limit = options?.pagination?.limit;
+    const redis = await Redis.getInstance();
+
+    const key = this.getTodoCacheKey(userId, options);
+
+    const isExist = await redis.exists(key);
+    if (isExist) {
+      const data = await redis.get<{ total: number; data: Todo[] }>(key);
+      if (data) return data;
+      redis.del(key);
+    }
 
     const whereOptions = { deletedAt: null, userId, ...options?.filter };
     const todos = await this.prisma.todo.findMany({
@@ -28,9 +40,12 @@ export class PrismaTodoRepository implements TodoRepository {
       skip: page && limit ? limit * page - limit : undefined,
       take: limit,
     });
+
     const total = await this.count(whereOptions);
     const data = todos.map(this.toTodo);
-    return { total: Math.ceil(total / (limit ?? 1)), data };
+    const responseData = { total: Math.ceil(total / (limit ?? 1)), data };
+    if (redis && total > 0) redis.set(key, responseData, 60 * 60);
+    return responseData;
   }
 
   private async count(options: any): Promise<number> {
@@ -49,6 +64,10 @@ export class PrismaTodoRepository implements TodoRepository {
     const newTodo = await this.prisma.todo.create({
       data,
     });
+    const redis = await Redis.getInstance();
+
+    await redis.del(`todos:${data.userId}:*`);
+
     return this.toTodo(newTodo);
   }
 
@@ -59,15 +78,39 @@ export class PrismaTodoRepository implements TodoRepository {
       where: { id, deletedAt: null },
       data,
     });
+    const redis = await Redis.getInstance();
+
+    await redis.del(`todos:${userId}:*`);
     return this.toTodo(updatedTodo);
   }
 
   async remove(userId: UserID, id: TodoID): Promise<unknown> {
     const findTodo = await this.findById(userId, id);
     if (!findTodo) throw new Error("Todo not found");
+
+    const redis = await Redis.getInstance();
+    await redis.del(`todos:${userId}:*`);
+
     return await this.prisma.todo.delete({
       where: { id },
     });
+  }
+
+  private getTodoCacheKey(
+    userId: UserID,
+    options?: { filter?: TodoFilter; pagination?: TodoPagination }
+  ): string {
+    const payload = {
+      userId,
+      filter: options?.filter || {},
+      pagination: options?.pagination || {},
+    };
+
+    const serialized = JSON.stringify(payload);
+
+    const hash = crypto.createHash("md5").update(serialized).digest("hex");
+
+    return `todos:${userId}:${hash}`;
   }
 
   private toTodo(todo: PrismaTodo): Todo {

@@ -9,7 +9,6 @@ import { getTodoRepository } from "@todo/database";
 import { ImplValidationError } from "@todo/errors/custom-error/validation-error";
 import { ZodError } from "@todo/errors/interface/ValidationError";
 import { CreateTodoSchema, UpdateTodoSchema } from "@todo/shared/schemas";
-
 import { Request, Response } from "express";
 
 export const getAllTodos = async (req: Request, res: Response) => {
