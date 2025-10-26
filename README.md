@@ -38,7 +38,7 @@ The project is organized into multiple packages and apps, each with its own purp
 - `packages/database`: Database implementations (Prisma)
 - `packages/errors`: Custom error handling utilities
 - `packages/eslint-config`: Shared ESLint configurations
-- `packages/permission-manger`: Role-based access control system
+- `packages/permission-manager`: Role and Attribute-based (RBAC & ABAC) access control system 
 - `packages/schemas`: Zod validation schemas
 - `packages/shared`: Shared utilities
 - `packages/typescript-config`: Shared TypeScript configurations
